@@ -10,7 +10,7 @@ export default function SplashScreen() {
   useEffect(() => {
     // Espera 3 segundos (3000ms) e depois substitui a tela pela Home
     const timer = setTimeout(() => {
-      router.replace('/home' as any); 
+      router.replace('/intro' as any);
     }, 3000);
 
     return () => clearTimeout(timer); // Limpeza de segurança
