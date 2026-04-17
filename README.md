@@ -1,50 +1,46 @@
-# Welcome to your Expo app 👋
+🦴 AnatoApp - HCI 2025.2 (UFPE)
+O AnatoApp é uma plataforma interativa de aprendizado de anatomia humana, desenvolvida como projeto prático para a disciplina de Interação Humano-Computador (HCI) no Centro de Informática da UFPE. O foco do projeto é a gamificação do ensino de sistemas anatômicos para estudantes da área da saúde.
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+🛠️ Tecnologias Utilizadas
+Framework: React Native com Expo (SDK 51+)
 
-## Get started
+Navegação: Expo Router (File-based routing)
 
-1. Install dependencies
+Estilização: Tailwind CSS através do NativeWind
 
-   ```bash
-   npm install
-   ```
+Backend: Firebase (Authentication & Firestore)
 
-2. Start the app
+Ícones: Lucide React Native
 
-   ```bash
-   npx expo start
-   ```
+🚀 Como Rodar o Projeto
+1. Pré-requisitos
+Antes de começar, você precisa ter instalado:
 
-In the output, you'll find options to open the app in a
+Node.js (v18+)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+App Expo Go no seu celular (disponível na App Store ou Play Store)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+2. Instalação
+Clone o repositório e instale as dependências:
 
-## Get a fresh project
+Bash
+git clone https://github.com/seu-usuario/AnatoApp.git
+cd AnatoApp
+npm install
+3. Configuração do Firebase (.env)
+Este projeto utiliza variáveis de ambiente para a conexão com o Firebase. O arquivo .env está no .gitignore por segurança.
+Peça as chaves de acesso ao administrador do projeto e crie um arquivo chamado .env na raiz do projeto com o seguinte formato:
 
-When you're ready, run:
+Snippet de código
+EXPO_PUBLIC_FIREBASE_API_KEY=xxx
+EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=xxx
+EXPO_PUBLIC_FIREBASE_PROJECT_ID=xxx
+EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=xxx
+EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=xxx
+EXPO_PUBLIC_FIREBASE_APP_ID=xxx
+4. Execução
+Inicie o servidor do Expo:
 
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Bash
+npx expo start
+Leia o QR Code com a câmera do celular (iOS) ou com o app Expo Go (Android).
