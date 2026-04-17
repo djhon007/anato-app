@@ -2,10 +2,13 @@ import { useRouter } from 'expo-router';
 import { Activity, BookOpen, ChevronRight, ClipboardCheck, GraduationCap, Map as MapIcon, Trophy } from 'lucide-react-native';
 import React from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { auth } from '../config/firebase';
 
 export default function HomeScreen() {
   const router = useRouter();
-
+  const user = auth.currentUser;
+  // Pega a parte antes do "@" do e-mail para usar como nome (ex: teste@ufpe.br vira "teste")
+  const userName = user?.email ? user.email.split('@')[0] : 'Estudante';
   return (
     <ScrollView className="flex-1 bg-gray-50">
       {/* Cabeçalho do Perfil */}
@@ -16,8 +19,8 @@ export default function HomeScreen() {
               <Image source={{ uri: "https://picsum.photos/seed/ana/100/100" }} className="w-full h-full rounded-full" />
             </View>
             <View>
-              <Text className="font-bold text-lg text-gray-800">Ana Medeiros</Text>
-              <Text className="text-xs font-medium text-gray-500">1º período</Text>
+              <Text className="font-bold text-lg text-gray-800 capitalize">{userName}</Text>
+              <Text className="text-xs font-medium text-gray-500">Logado no Firebase</Text>
             </View>
           </View>
           <View className="bg-red-800 px-4 py-1.5 rounded-full flex-row items-center shadow-md">

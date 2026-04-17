@@ -1,11 +1,24 @@
+import { useRouter } from 'expo-router';
+import { signOut } from 'firebase/auth';
 import { Bell, ChevronRight, HelpCircle, Moon, Shield, User, Volume2 } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
-
+import { auth } from '../config/firebase';
 export default function ConfigScreen() {
   const [notifications, setNotifications] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [sounds, setSounds] = useState(true);
+
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      router.replace('/login'); // Joga o usuário de volta para a tela de login
+    } catch (error) {
+      console.error("Erro ao sair:", error);
+    }
+  };
 
   const sections = [
     {
@@ -78,7 +91,7 @@ export default function ConfigScreen() {
 
         <View className="items-center py-6 gap-4">
            <Text className="text-[10px] font-bold uppercase tracking-widest text-gray-400">AnatoApp v1.0.0</Text>
-           <TouchableOpacity>
+           <TouchableOpacity onPress={handleLogout} className="active:scale-95">
              <Text className="text-sm font-black text-red-600">Sair da conta</Text>
            </TouchableOpacity>
         </View>
