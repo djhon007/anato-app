@@ -25,8 +25,12 @@ Antes de começar, você precisa ter instalado na sua máquina:
 Clone o repositório e instale as dependências:
 
 ```bash
-git clone [https://github.com/seu-usuario/AnatoApp.git](https://github.com/seu-usuario/AnatoApp.git)
+git clone https://github.com/djhon007/anato-app.git
+```
+```
 cd AnatoApp
+```
+```
 npm install
 ```
 
