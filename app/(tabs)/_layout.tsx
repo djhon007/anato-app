@@ -6,7 +6,7 @@ export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        headerShown: false, // Esconde os cabeçalhos padrão do celular
+        headerShown: false,
         tabBarActiveTintColor: THEME.primary,
         tabBarInactiveTintColor: '#9ca3af',
         tabBarStyle: {

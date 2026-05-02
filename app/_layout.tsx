@@ -1,13 +1,9 @@
-import '../global.css';
-
 import { Stack } from 'expo-router';
+import '../global.css';
 
 export default function RootLayout() {
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      {/* Aqui nós dizemos quais telas existem no app */}
-      <Stack.Screen name="index" />
-      <Stack.Screen name="home" />
-    </Stack>
+    // Deixando o Stack vazio, ele mapeia TODOS os arquivos da pasta app/ automaticamente!
+    <Stack screenOptions={{ headerShown: false }} />
   );
 }

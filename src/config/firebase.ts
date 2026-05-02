@@ -1,6 +1,8 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+// Importamos TUDO de auth em uma única variável
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as authModule from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
@@ -13,5 +15,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-export const auth = getAuth(app);
+// O "as any" diz ao TypeScript: "Confia em mim, a função está aí dentro!"
+export const auth = authModule.initializeAuth(app, {
+  persistence: (authModule as any).getReactNativePersistence(AsyncStorage)
+});
+
 export const db = getFirestore(app);

@@ -6,7 +6,8 @@ import { THEME } from '../constants';
 
 // IMPORTAÇÕES NOVAS DO FIREBASE
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../config/firebase';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { auth, db } from '../config/firebase';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -27,25 +28,42 @@ export default function LoginScreen() {
     setLoading(true);
     try {
       if (isLogin) {
-        // Tenta fazer o Login
+        // LOGIN
         await signInWithEmailAndPassword(auth, email, password);
-        router.replace('/(tabs)/home'); 
+        setLoading(false); // Desliga o loading antes de viajar
+        router.replace('/home'); 
       } else {
-        // Tenta Criar a Conta
-        await createUserWithEmailAndPassword(auth, email, password);
-        Alert.alert('Sucesso!', 'Conta criada com sucesso.');
-        router.replace('/(tabs)/home');
+        // CADASTRO
+        console.log("1. Criando usuário no Auth...");
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        console.log("2. Usuário criado:", user.uid);
+
+        console.log("3. Salvando perfil no banco de dados...");
+        await setDoc(doc(db, "usuarios", user.uid), {
+          nome: email.split('@')[0],
+          email: user.email,
+          nivel: 1,
+          xp: 0,
+          sistemas_concluidos: [],
+          criado_em: serverTimestamp()
+        });
+        console.log("4. Perfil salvo com sucesso!");
+
+        setLoading(false); // Desliga o loading antes de viajar
+        // Removemos o Alert de sucesso para não travar a animação de transição da tela
+        router.replace('/home'); // Usa a rota direta e limpa
       }
     } catch (error: any) {
-      // Tratamento básico de erros do Firebase
+      setLoading(false); // Garante que o loading para se der erro
+      console.log("ERRO CAPTURADO:", error);
+      
       let mensagem = 'Ocorreu um erro.';
       if (error.code === 'auth/invalid-credential') mensagem = 'E-mail ou senha incorretos.';
       if (error.code === 'auth/email-already-in-use') mensagem = 'Este e-mail já está em uso.';
       if (error.code === 'auth/weak-password') mensagem = 'A senha deve ter pelo menos 6 caracteres.';
       
       Alert.alert('Ops!', mensagem);
-    } finally {
-      setLoading(false);
     }
   };
 
