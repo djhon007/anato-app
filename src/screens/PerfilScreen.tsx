@@ -1,8 +1,11 @@
+import { useRouter } from 'expo-router'; // 1. IMPORT NOVO
 import { Activity, Award, BookOpen, MoreVertical, Star, Trophy, Zap } from 'lucide-react-native';
 import React from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 export default function PerfilScreen() {
+  const router = useRouter(); // 2. HOOK DE NAVEGAÇÃO
+
   const achievements = [
     { title: 'Iniciante', desc: 'Completou a primeira fase', icon: <Zap size={20} color="#ef4444" />, done: true },
     { title: 'Estudioso', desc: 'Completou 2/128 fases', icon: <BookOpen size={20} color="#9ca3af" />, done: false },
@@ -58,7 +61,7 @@ export default function PerfilScreen() {
         </View>
 
         {/* Achievements */}
-        <View className="mb-10">
+        <View className="mb-6">
           <Text className="font-bold text-lg mb-4 px-1 text-gray-800">Conquistas</Text>
           <View className="flex-row flex-wrap justify-between">
             {achievements.map((ach, idx) => (
@@ -74,6 +77,15 @@ export default function PerfilScreen() {
             ))}
           </View>
         </View>
+
+        {/* 3. BOTÃO PROVISÓRIO DE ADMIN */}
+        <TouchableOpacity 
+          onPress={() => router.push('/cadastrar-questao' as any)}
+          className="bg-gray-900 p-4 rounded-2xl flex-row justify-center items-center shadow-md mb-10 border border-gray-800"
+        >
+          <Text className="text-white font-bold text-center">🛠️ Cadastrar Questões (Admin)</Text>
+        </TouchableOpacity>
+
       </View>
     </ScrollView>
   );

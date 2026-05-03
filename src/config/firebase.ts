@@ -1,8 +1,12 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
-// Importamos TUDO de auth em uma única variável
+// Adicionamos o getAuth para a versão Web
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as authModule from 'firebase/auth';
+import { getAuth, initializeAuth } from 'firebase/auth';
+// Importamos o Platform para descobrir onde o app está rodando
+import { Platform } from 'react-native';
+
+// @ts-ignore
+import { getReactNativePersistence } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
@@ -13,11 +17,24 @@ const firebaseConfig = {
   appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID
 };
 
+// Inicializa o App
 const app = initializeApp(firebaseConfig);
 
-// O "as any" diz ao TypeScript: "Confia em mim, a função está aí dentro!"
-export const auth = authModule.initializeAuth(app, {
-  persistence: (authModule as any).getReactNativePersistence(AsyncStorage)
-});
+let auth;
 
-export const db = getFirestore(app);
+if (Platform.OS === 'web') {
+  // Se estiver no navegador (Web), o Firebase já sabe salvar a sessão sozinho
+  auth = getAuth(app);
+} else {
+  // Se estiver no celular (iOS/Android), usamos o AsyncStorage
+  auth = initializeAuth(app, {
+    persistence: getReactNativePersistence(AsyncStorage)
+  });
+}
+
+// O db continua igualzinho ao que você já tinha:
+import { getFirestore } from 'firebase/firestore';
+const db = getFirestore(app);
+
+export { auth, db };
+
