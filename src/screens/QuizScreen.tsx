@@ -1,12 +1,21 @@
 import { useRouter } from 'expo-router';
 import { collection, getDocs } from 'firebase/firestore';
-import { ArrowLeft, CheckCircle, XCircle } from 'lucide-react-native';
+import { ArrowLeft, CheckCircle, Trophy, XCircle } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { db } from '../config/firebase';
-import { Questao } from '../services/questoesService';
 
-export default function QuizScreen() {
+// Interface para garantir que o TypeScript conheça as propriedades da Questão
+interface Questao {
+  pergunta: string;
+  opcoes: string[];
+  resposta_correta: number;
+  explicacao: string;
+  sistema: string;
+  xp_recompensa: number;
+}
+
+export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
   const router = useRouter();
   
   // Estados do Jogo
@@ -17,6 +26,7 @@ export default function QuizScreen() {
   const [mostrandoFeedback, setMostrandoFeedback] = useState(false);
   const [acertos, setAcertos] = useState(0);
   const [xpGanho, setXpGanho] = useState(0);
+  const [quizFinalizado, setQuizFinalizado] = useState(false); // Estado que controla o fim do jogo
 
   useEffect(() => {
     carregarQuestoes();
@@ -24,19 +34,27 @@ export default function QuizScreen() {
 
   const carregarQuestoes = async () => {
     try {
-      // 1. Busca TODAS as questões da coleção
       const querySnapshot = await getDocs(collection(db, "questoes"));
       let questoesBaixadas: Questao[] = [];
       
       querySnapshot.forEach((doc) => {
-        questoesBaixadas.push(doc.data() as Questao);
+        const data = doc.data() as Questao;
+        
+        // Se vier da Jornada (tem sistemaId), filtra pelo sistema. Se não, pega todas (Simulado).
+        if (sistemaId) {
+          if (data.sistema && data.sistema.toLowerCase() === sistemaId.toLowerCase()) {
+            questoesBaixadas.push(data);
+          }
+        } else {
+          questoesBaixadas.push(data);
+        }
       });
 
-      // 2. Embaralha as questões (Fisher-Yates Shuffle rápido)
+      // Embaralha as questões
       const embaralhadas = questoesBaixadas.sort(() => Math.random() - 0.5);
       
-      // 3. Pega apenas as 10 primeiras para o simulado
-      setQuestoes(embaralhadas.slice(0, 10));
+      // Se for simulado, limita a 10 questões. Se for jornada, pode mostrar todas do sistema.
+      setQuestoes(sistemaId ? embaralhadas : embaralhadas.slice(0, 10));
     } catch (error) {
       console.error("Erro ao carregar questões:", error);
     } finally {
@@ -52,27 +70,29 @@ export default function QuizScreen() {
     const questao = questoes[perguntaAtual];
     if (opcaoSelecionada === questao.resposta_correta) {
       setAcertos(acertos + 1);
-      setXpGanho(xpGanho + questao.xp_recompensa);
+      // Se a questão não tiver XP cadastrado, dá 10 por padrão
+      setXpGanho(xpGanho + (questao.xp_recompensa || 10)); 
     }
   };
 
   const proximaPergunta = () => {
     if (perguntaAtual < questoes.length - 1) {
+      // Vai para a próxima pergunta
       setPerguntaAtual(perguntaAtual + 1);
       setOpcaoSelecionada(null);
       setMostrandoFeedback(false);
     } else {
-      // FIM DO QUIZ
-      alert(`Fim do Simulado!\nVocê acertou ${acertos} de ${questoes.length} e ganhou ${xpGanho} XP!`);
-      router.back();
+      // Finaliza o jogo ativando a tela de vitória
+      setQuizFinalizado(true);
     }
   };
 
+  // --- TELAS DE CARREGAMENTO E ERRO (Early Returns) ---
   if (loading) {
     return (
       <View className="flex-1 justify-center items-center bg-gray-50">
         <ActivityIndicator size="large" color="#991b1b" />
-        <Text className="mt-4 text-gray-500 font-medium">Preparando o simulado...</Text>
+        <Text className="mt-4 text-gray-500 font-medium">Preparando questões...</Text>
       </View>
     );
   }
@@ -81,7 +101,7 @@ export default function QuizScreen() {
     return (
       <View className="flex-1 justify-center items-center bg-gray-50 px-6 text-center">
         <Text className="text-xl font-bold text-gray-800 mb-2">Ops!</Text>
-        <Text className="text-gray-500 text-center">Não encontramos questões no banco de dados. Volte e cadastre algumas primeiro!</Text>
+        <Text className="text-gray-500 text-center">Nenhuma questão encontrada para este modo.</Text>
         <TouchableOpacity onPress={() => router.back()} className="mt-6 bg-red-800 px-6 py-3 rounded-xl">
           <Text className="text-white font-bold">Voltar</Text>
         </TouchableOpacity>
@@ -89,6 +109,40 @@ export default function QuizScreen() {
     );
   }
 
+  // --- TELA DE VITÓRIA: Aparece apenas quando o jogo acaba ---
+  if (quizFinalizado) {
+    return (
+      <View className="flex-1 bg-gray-50 justify-center items-center px-6">
+        <View className="w-24 h-24 bg-red-100 rounded-full items-center justify-center mb-6">
+          <Trophy size={48} color="#991b1b" />
+        </View>
+        <Text className="text-3xl font-black text-gray-800 mb-2">Simulado Concluído!</Text>
+        <Text className="text-gray-500 text-center mb-8">
+          Você revisou {questoes.length} questões.
+        </Text>
+
+        <View className="flex-row gap-4 mb-8 w-full">
+          <View className="bg-white p-4 rounded-3xl items-center border border-gray-100 shadow-sm flex-1">
+            <Text className="text-4xl font-black text-green-500">{acertos}</Text>
+            <Text className="text-[10px] text-gray-400 font-bold uppercase mt-1">Acertos</Text>
+          </View>
+          <View className="bg-white p-4 rounded-3xl items-center border border-gray-100 shadow-sm flex-1">
+            <Text className="text-4xl font-black text-yellow-500">+{xpGanho}</Text>
+            <Text className="text-[10px] text-gray-400 font-bold uppercase mt-1">XP Ganho</Text>
+          </View>
+        </View>
+
+        <TouchableOpacity 
+          onPress={() => router.replace('/(tabs)/home')} 
+          className="bg-red-800 w-full p-4 rounded-2xl items-center shadow-md"
+        >
+          <Text className="text-white font-bold text-lg">Voltar ao Menu</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  // --- TELA NORMAL DO JOGO (Se ainda não acabou) ---
   const questao = questoes[perguntaAtual];
   const acertou = opcaoSelecionada === questao.resposta_correta;
 
@@ -125,7 +179,6 @@ export default function QuizScreen() {
             const isSelecionada = opcaoSelecionada === index;
             const isCorreta = questao.resposta_correta === index;
             
-            // Lógica de cores do feedback
             let borderClass = "border-gray-200";
             let bgClass = "bg-white";
             let textClass = "text-gray-700";
@@ -154,7 +207,6 @@ export default function QuizScreen() {
                 className={`p-4 rounded-2xl border-2 flex-row items-center justify-between ${borderClass} ${bgClass}`}
               >
                 <Text className={`flex-1 text-base ${textClass}`}>{opcao}</Text>
-                
                 {mostrandoFeedback && isCorreta && <CheckCircle size={20} color="#22c55e" />}
                 {mostrandoFeedback && isSelecionada && !isCorreta && <XCircle size={20} color="#ef4444" />}
               </TouchableOpacity>
@@ -162,7 +214,7 @@ export default function QuizScreen() {
           })}
         </View>
 
-        {/* Caixa de Explicação (Aparece apenas após responder) */}
+        {/* Caixa de Explicação */}
         {mostrandoFeedback && (
           <View className={`p-5 rounded-2xl mb-8 ${acertou ? 'bg-green-100' : 'bg-red-100'}`}>
             <Text className={`font-bold text-lg mb-2 ${acertou ? 'text-green-800' : 'text-red-800'}`}>

@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { AlertCircle, Brain, Calendar, Play, RefreshCcw, Target } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
@@ -31,15 +31,8 @@ export default function QuestoesScreen() {
   }, []);
 
   const iniciarSimulado = () => {
-    Alert.alert(
-      "Preparado?", 
-      `Vamos sortear 10 questões misturadas dos ${sistemasLiberados} sistemas que você já tem acesso.`,
-      [
-        { text: "Cancelar", style: "cancel" },
-        { text: "Começar", onPress: () => router.push('/quiz/simulado' as any) }
-      ]
-    );
-  };
+  router.push('/quiz/simulado' as any);
+};
 
   if (loading) {
     return (

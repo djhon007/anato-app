@@ -1,14 +1,36 @@
 import { useRouter } from 'expo-router';
+import { doc, getDoc } from 'firebase/firestore';
 import { Activity, BookOpen, ChevronRight, ClipboardCheck, GraduationCap, Map as MapIcon, Trophy } from 'lucide-react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { auth } from '../config/firebase';
+
+// Importações do Firebase consolidadas
+import { auth, db } from '../config/firebase';
 
 export default function HomeScreen() {
   const router = useRouter();
   const user = auth.currentUser;
-  // Pega a parte antes do "@" do e-mail para usar como nome (ex: teste@ufpe.br vira "teste")
-  const userName = user?.email ? user.email.split('@')[0] : 'Estudante';
+  const [userData, setUserData] = useState<any>(null);
+
+  useEffect(() => {
+    const carregarDados = async () => {
+      if (!auth.currentUser) return;
+      const docRef = doc(db, 'usuarios', auth.currentUser.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) setUserData(docSnap.data());
+    };
+    carregarDados();
+  }, []);
+
+  const sistemasConcluidos = userData?.sistemas_concluidos?.length || 0;
+  const totalSistemas = 7; // Total de sistemas do seu app
+  
+  // O || 0 no final garante que não mostre "NaN" se der algum erro na conta matemática
+  const progressoPercentual = Math.round((sistemasConcluidos / totalSistemas) * 100) || 0; 
+  
+  // Tenta pegar o nome que está no banco. Se não tiver, usa o e-mail antes do @. Se não tiver, usa 'Estudante'
+  const userName = userData?.nome || (user?.email ? user.email.split('@')[0] : 'Estudante');
+
   return (
     <ScrollView className="flex-1 bg-gray-50">
       {/* Cabeçalho do Perfil */}
@@ -20,11 +42,11 @@ export default function HomeScreen() {
             </View>
             <View>
               <Text className="font-bold text-lg text-gray-800 capitalize">{userName}</Text>
-              <Text className="text-xs font-medium text-gray-500">Logado no Firebase</Text>
+              <Text className="text-xs font-medium text-gray-500">Nível {userData?.nivel || 1}</Text>
             </View>
           </View>
           <View className="bg-red-800 px-4 py-1.5 rounded-full flex-row items-center shadow-md">
-            <Text className="text-white text-xs font-bold">Level 1</Text>
+            <Text className="text-white text-xs font-bold">{userData?.xp || 0} XP</Text>
           </View>
         </View>
 
@@ -34,8 +56,8 @@ export default function HomeScreen() {
               <Trophy size={18} color="#991b1b" />
             </View>
             <View>
-              <Text className="text-[10px] font-bold uppercase tracking-wider text-red-800">Troféus</Text>
-              <Text className="text-sm font-bold text-gray-800">1 Fase completa</Text>
+              <Text className="text-[10px] font-bold uppercase tracking-wider text-red-800">Conquistas</Text>
+              <Text className="text-sm font-bold text-gray-800">{sistemasConcluidos} Fases</Text>
             </View>
           </View>
           <View className="flex-1 p-3 rounded-2xl flex-row items-center gap-3 border bg-red-50 border-red-100">
@@ -44,27 +66,30 @@ export default function HomeScreen() {
             </View>
             <View>
               <Text className="text-[10px] font-bold uppercase tracking-wider text-red-800">Sistemas</Text>
-              <Text className="text-sm font-bold text-gray-800">2 Iniciados</Text>
+              <Text className="text-sm font-bold text-gray-800">0 Iniciados</Text>
             </View>
           </View>
         </View>
       </View>
 
-      <View className="p-6 space-y-6">
-        {/* Cartão de Progresso */}
-        <View className="p-5 rounded-3xl shadow-sm border bg-white border-gray-100 mb-6">
-          <View className="flex-row justify-between items-center mb-3">
-            <Text className="font-bold text-gray-800">Seu progresso</Text>
-            <View className="bg-red-50 px-2 py-0.5 rounded-full">
-              <Text className="text-xs font-bold text-red-800">7%</Text>
+      {/* Container Principal abaixo do Cabeçalho */}
+      <View className="p-6">
+        {/* Cartão de Progresso Geral */}
+        <View className="bg-white rounded-3xl p-5 shadow-sm border border-gray-100 mb-8">
+          <View className="flex-row justify-between items-end mb-3">
+            <View>
+              <Text className="text-gray-500 font-medium text-sm">Progresso Geral</Text>
+              <Text className="text-xs text-gray-400 mt-0.5">{sistemasConcluidos} de {totalSistemas} Fases Completas</Text>
             </View>
+            <Text className="text-xl font-black text-gray-800">{progressoPercentual}%</Text>
           </View>
-          <View className="w-full h-3 rounded-full overflow-hidden bg-gray-100">
-            <View className="h-full bg-red-800 rounded-full w-[7%]" />
+          
+          <View className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+            <View 
+              className="h-full bg-red-800 rounded-full" 
+              style={{ width: `${progressoPercentual}%` }} 
+            />
           </View>
-          <Text className="text-[11px] mt-3 font-medium text-gray-500">
-            Continue estudando para manter sua frequência!
-          </Text>
         </View>
 
         {/* Opções de Menu */}
@@ -103,10 +128,10 @@ export default function HomeScreen() {
             <ChevronRight color="#d1d5db" />
           </TouchableOpacity>
 
-          {/* Cartão: ESTUDO (AQUI ESTÁ O SEU LINK!) */}
+          {/* Cartão: ESTUDO */}
           <TouchableOpacity 
             activeOpacity={0.7}
-            onPress={() => router.push('/estudo')}
+            onPress={() => router.push('/estudo' as any)}
             className="w-full p-4 rounded-3xl flex-row items-center gap-4 shadow-sm border bg-white border-gray-100 mb-3"
           >
             <View className="w-16 h-16 rounded-2xl flex items-center justify-center bg-red-50">

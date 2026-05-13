@@ -47,6 +47,13 @@ export default function TabsLayout() {
           tabBarIcon: ({ color }) => <User size={24} color={color} />,
         }}
       />
+            <Tabs.Screen
+        name="questoes"
+        options={{
+          title: 'Treino Livre',
+          href: null,
+        }}
+      />
       <Tabs.Screen
         name="config"
         options={{

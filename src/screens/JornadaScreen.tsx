@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { Activity, Brain, Heart, Lock } from 'lucide-react-native';
+import { Activity, Bone, Brain, Dumbbell, Heart, Lock } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
@@ -33,7 +33,9 @@ export default function JornadaScreen() {
 
   // Definição da ordem oficial das Fases/Sistemas do jogo
   const trilhaSistemas = [
-    { id: 'locomotor', nome: 'Sistema Locomotor', desc: 'Estruturas relacionadas ao movimento', icon: Activity },
+    { id: 'osteologia', nome: 'Osteologia', desc: 'Estudo dos ossos e esqueleto', icon: Bone },
+    { id: 'artrologia', nome: 'Artrologia', desc: 'Estudo das articulações', icon: Activity },
+    { id: 'miologia', nome: 'Miologia', desc: 'Estudo dos músculos e movimentos', icon: Dumbbell },
     { id: 'nervoso', nome: 'Sistema Nervoso', desc: 'Controle e processamento de informações', icon: Brain },
     { id: 'cardiovascular', nome: 'Sistema Cardiovascular', desc: 'Coração e circulação sanguínea', icon: Heart },
   ];
