@@ -1,8 +1,21 @@
 import { useRouter } from 'expo-router';
 import { ArrowLeft, Save } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { 
+  ActivityIndicator, 
+  Alert, 
+  KeyboardAvoidingView, 
+  Platform, 
+  ScrollView, 
+  Text, 
+  TextInput, 
+  TouchableOpacity, 
+  View, 
+  Button, 
+  StyleSheet 
+} from 'react-native';
 import { cadastrarQuestao } from '../services/questoesService';
+import { executarSeeder } from '../services/seederService'; // Importação do seeder centralizada
 
 export default function CadastrarQuestaoScreen() {
   const router = useRouter();
@@ -10,14 +23,13 @@ export default function CadastrarQuestaoScreen() {
 
   // Estados do formulário
   const [pergunta, setPergunta] = useState('');
-  const [opcoes, setOpcoes] = useState(['', '', '', '']); // Array com 4 textos vazios
-  const [respostaCorreta, setRespostaCorreta] = useState(0); // Índice 0 a 3
+  const [opcoes, setOpcoes] = useState(['', '', '', '']); 
+  const [respostaCorreta, setRespostaCorreta] = useState(0); 
   const [sistema, setSistema] = useState('');
-  const [dificuldade, setDificuldade] = useState('1'); // Texto para facilitar a digitação
-  const [xp, setXp] = useState('10'); // Texto para facilitar a digitação
+  const [dificuldade, setDificuldade] = useState('1'); 
+  const [xp, setXp] = useState('10'); 
   const [explicacao, setExplicacao] = useState('');
 
-  // Função para atualizar uma alternativa específica do array
   const atualizarOpcao = (texto: string, index: number) => {
     const novasOpcoes = [...opcoes];
     novasOpcoes[index] = texto;
@@ -25,15 +37,12 @@ export default function CadastrarQuestaoScreen() {
   };
 
   const handleSalvar = async () => {
-    // Validação básica
     if (!pergunta || !sistema || opcoes.some(opt => opt === '') || !explicacao) {
-      Alert.alert('Atenção', 'Por favor, preencha todos os campos e as 4 alternativas.');
+      Alert.alert('Atenção', 'Por favor, preencha todos os campos.');
       return;
     }
 
     setLoading(true);
-    
-    // Monta o objeto no formato exato que a nossa interface exige
     const sucesso = await cadastrarQuestao({
       pergunta,
       opcoes,
@@ -43,17 +52,14 @@ export default function CadastrarQuestaoScreen() {
       xp_recompensa: Number(xp),
       explicacao
     });
-
     setLoading(false);
 
     if (sucesso) {
-      Alert.alert('Sucesso!', 'Questão cadastrada no banco de dados!');
-      // Limpa o formulário para a próxima questão
+      Alert.alert('Sucesso!', 'Questão cadastrada!');
       setPergunta('');
       setOpcoes(['', '', '', '']);
       setRespostaCorreta(0);
       setExplicacao('');
-      // Mantemos sistema, dificuldade e XP iguais para facilitar o cadastro em lote
     } else {
       Alert.alert('Erro', 'Não foi possível salvar a questão.');
     }
@@ -67,7 +73,7 @@ export default function CadastrarQuestaoScreen() {
           <ArrowLeft size={24} color="#374151" />
         </TouchableOpacity>
         <Text className="font-bold text-lg text-gray-800">Nova Questão</Text>
-        <View className="w-8" /> {/* Espaçador para centralizar o título */}
+        <View className="w-8" />
       </View>
 
       <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 100 }} showsVerticalScrollIndicator={false}>
@@ -94,9 +100,8 @@ export default function CadastrarQuestaoScreen() {
           <TextInput 
             value={pergunta} 
             onChangeText={setPergunta} 
-            placeholder="Digite a pergunta da questão..." 
+            placeholder="Digite a pergunta..." 
             multiline 
-            numberOfLines={3}
             className="bg-white border border-gray-200 rounded-xl p-4 text-gray-800 text-base" 
             style={{ textAlignVertical: 'top' }}
           />
@@ -104,9 +109,9 @@ export default function CadastrarQuestaoScreen() {
 
         {/* Alternativas */}
         <View className="mb-6 space-y-3">
-          <Text className="text-xs font-bold text-gray-500 mb-1 uppercase">Alternativas (Marque a correta)</Text>
+          <Text className="text-xs font-bold text-gray-500 mb-1 uppercase">Alternativas</Text>
           {opcoes.map((opcao, index) => (
-            <View key={index} className="flex-row items-center gap-3">
+            <View key={index} className="flex-row items-center gap-3 mb-2">
               <TouchableOpacity 
                 onPress={() => setRespostaCorreta(index)}
                 className={`w-8 h-8 rounded-full border-2 flex items-center justify-center ${respostaCorreta === index ? 'border-red-800 bg-red-800' : 'border-gray-300 bg-white'}`}
@@ -125,23 +130,22 @@ export default function CadastrarQuestaoScreen() {
 
         {/* Explicação */}
         <View className="mb-8">
-          <Text className="text-xs font-bold text-gray-500 mb-1 uppercase">Explicação da Resposta</Text>
+          <Text className="text-xs font-bold text-gray-500 mb-1 uppercase">Explicação</Text>
           <TextInput 
             value={explicacao} 
             onChangeText={setExplicacao} 
-            placeholder="Por que essa é a resposta certa?" 
+            placeholder="Justificativa..." 
             multiline 
-            numberOfLines={2}
             className="bg-white border border-gray-200 rounded-xl p-4 text-gray-800" 
             style={{ textAlignVertical: 'top' }}
           />
         </View>
 
-        {/* Botão Salvar */}
+        {/* Botão Salvar Principal */}
         <TouchableOpacity 
           onPress={handleSalvar} 
           disabled={loading}
-          className="bg-red-800 p-4 rounded-2xl flex-row items-center justify-center gap-2 shadow-sm"
+          className="bg-red-800 p-4 rounded-2xl flex-row items-center justify-center gap-2 shadow-sm mb-10"
         >
           {loading ? <ActivityIndicator color="white" /> : (
             <>
@@ -150,8 +154,39 @@ export default function CadastrarQuestaoScreen() {
             </>
           )}
         </TouchableOpacity>
+
+        {/* BOTÃO DO SEEDER (Aparece no final da lista) */}
+        <View style={styles.seederContainer}>
+          <Text style={styles.devText}>Ações de Desenvolvedor:</Text>
+          <Button 
+            title="CARREGAR AS 50 QUESTÕES NO FIREBASE" 
+            onPress={executarSeeder} 
+            color="#ff4444"
+          />
+        </View>
         
       </ScrollView>
     </KeyboardAvoidingView>
   );
 }
+
+// Estilos extras para o seeder
+const styles = StyleSheet.create({
+  seederContainer: {
+    marginTop: 20,
+    padding: 20,
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: '#eee',
+    borderStyle: 'dashed'
+  },
+  devText: {
+    textAlign: 'center',
+    color: '#999',
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textTransform: 'uppercase'
+  }
+});
