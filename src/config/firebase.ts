@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 // Adicionamos o getAuth para a versão Web
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getAuth, initializeAuth } from 'firebase/auth';
+import { Auth, getAuth, initializeAuth } from 'firebase/auth';
 // Importamos o Platform para descobrir onde o app está rodando
 import { Platform } from 'react-native';
 
@@ -20,7 +20,7 @@ const firebaseConfig = {
 // Inicializa o App
 const app = initializeApp(firebaseConfig);
 
-let auth;
+let auth: Auth;
 
 if (Platform.OS === 'web') {
   // Se estiver no navegador (Web), o Firebase já sabe salvar a sessão sozinho

@@ -90,7 +90,7 @@ export default function HomeScreen() {
           {/* Cartão: QUESTÕES */}
           <TouchableOpacity 
             activeOpacity={0.7}
-            onPress={() => router.push('/(tabs)/jornada')} // Redirecionando para Jornada provisoriamente
+            onPress={() => router.push('/questoes' as any)}
             className="w-full p-4 rounded-3xl flex-row items-center gap-4 shadow-sm border bg-white border-gray-100 mb-3"
           >
             <View className="w-16 h-16 rounded-2xl flex items-center justify-center bg-red-50">
