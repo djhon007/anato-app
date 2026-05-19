@@ -3,6 +3,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { Activity, BookOpen, ChevronRight, ClipboardCheck, GraduationCap, Map as MapIcon, Trophy } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { trilhaSistemas } from '../config/SistemasConfig';
 
 // Importações do Firebase consolidadas
 import { auth, db } from '../config/firebase';
@@ -22,11 +23,31 @@ export default function HomeScreen() {
     carregarDados();
   }, []);
 
-  const sistemasConcluidos = userData?.sistemas_concluidos?.length || 0;
-  const totalSistemas = 7; // Total de sistemas do seu app
-  
-  // O || 0 no final garante que não mostre "NaN" se der algum erro na conta matemática
-  const progressoPercentual = Math.round((sistemasConcluidos / totalSistemas) * 100) || 0; 
+  const concluidos = userData?.sistemas_concluidos || [];
+  const progresso = userData?.progresso_sistemas || {};
+
+  let iniciadosCount = 0;
+  let porcentagemTotal = 0;
+  const pesoPorSistema = 100 / trilhaSistemas.length;
+
+  trilhaSistemas.forEach((sistema) => {
+    const acertosDesteSistema = progresso[sistema.id] || 0;
+
+    if (acertosDesteSistema > 0 && !concluidos.includes(sistema.id)) {
+      iniciadosCount++;
+    }
+
+    let progressoFracionado = (acertosDesteSistema / sistema.meta) * pesoPorSistema;
+
+    if (progressoFracionado > pesoPorSistema) {
+      progressoFracionado = pesoPorSistema;
+    }
+
+    porcentagemTotal += progressoFracionado;
+  });
+
+  const progressoPercentual = Math.round(porcentagemTotal) || 0;
+  const sistemasConcluidosCount = concluidos.length;
   
   // Tenta pegar o nome que está no banco. Se não tiver, usa o e-mail antes do @. Se não tiver, usa 'Estudante'
   const userName = userData?.nome || (user?.email ? user.email.split('@')[0] : 'Estudante');
@@ -57,7 +78,7 @@ export default function HomeScreen() {
             </View>
             <View>
               <Text className="text-[10px] font-bold uppercase tracking-wider text-red-800">Conquistas</Text>
-              <Text className="text-sm font-bold text-gray-800">{sistemasConcluidos} Fases</Text>
+              <Text className="text-sm font-bold text-gray-800">{sistemasConcluidosCount} Fases</Text>
             </View>
           </View>
           <View className="flex-1 p-3 rounded-2xl flex-row items-center gap-3 border bg-red-50 border-red-100">
@@ -66,7 +87,7 @@ export default function HomeScreen() {
             </View>
             <View>
               <Text className="text-[10px] font-bold uppercase tracking-wider text-red-800">Sistemas</Text>
-              <Text className="text-sm font-bold text-gray-800">0 Iniciados</Text>
+              <Text className="text-sm font-bold text-gray-800">{iniciadosCount} Iniciados</Text>
             </View>
           </View>
         </View>
@@ -79,7 +100,7 @@ export default function HomeScreen() {
           <View className="flex-row justify-between items-end mb-3">
             <View>
               <Text className="text-gray-500 font-medium text-sm">Progresso Geral</Text>
-              <Text className="text-xs text-gray-400 mt-0.5">{sistemasConcluidos} de {totalSistemas} Fases Completas</Text>
+              <Text className="text-xs text-gray-400 mt-0.5">{sistemasConcluidosCount} de {trilhaSistemas.length} Fases Completas</Text>
             </View>
             <Text className="text-xl font-black text-gray-800">{progressoPercentual}%</Text>
           </View>

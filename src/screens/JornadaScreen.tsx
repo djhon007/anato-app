@@ -1,44 +1,28 @@
 import { useRouter } from 'expo-router';
-import { Activity, Bone, Brain, Dumbbell, Heart, Lock } from 'lucide-react-native';
+import { doc, getDoc } from 'firebase/firestore';
+import { Lock } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
-// Importações do Firebase
-import { doc, getDoc } from 'firebase/firestore';
+// Importações do Firebase e da nossa Configuração Central
 import { auth, db } from '../config/firebase';
+import { trilhaSistemas } from '../config/SistemasConfig';
 
 export default function JornadaScreen() {
   const router = useRouter();
   const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  // Busca os dados do usuário para saber o progresso dele
   useEffect(() => {
-    const carregarProgresso = async () => {
+    const carregarDados = async () => {
       if (!auth.currentUser) return;
-      try {
-        const docRef = doc(db, 'usuarios', auth.currentUser.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setUserData(docSnap.data());
-        }
-      } catch (error) {
-        console.error("Erro ao carregar progresso:", error);
-      } finally {
-        setLoading(false);
-      }
+      const docRef = doc(db, 'usuarios', auth.currentUser.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) setUserData(docSnap.data());
+      setLoading(false);
     };
-    carregarProgresso();
+    carregarDados();
   }, []);
-
-  // Definição da ordem oficial das Fases/Sistemas do jogo
-  const trilhaSistemas = [
-    { id: 'osteologia', nome: 'Osteologia', desc: 'Estudo dos ossos e esqueleto', icon: Bone },
-    { id: 'artrologia', nome: 'Artrologia', desc: 'Estudo das articulações', icon: Activity },
-    { id: 'miologia', nome: 'Miologia', desc: 'Estudo dos músculos e movimentos', icon: Dumbbell },
-    { id: 'nervoso', nome: 'Sistema Nervoso', desc: 'Controle e processamento de informações', icon: Brain },
-    { id: 'cardiovascular', nome: 'Sistema Cardiovascular', desc: 'Coração e circulação sanguínea', icon: Heart },
-  ];
 
   if (loading) {
     return (
@@ -48,74 +32,76 @@ export default function JornadaScreen() {
     );
   }
 
-  // Pegamos a lista de sistemas que o aluno já terminou (se não existir, usamos um array vazio [])
-  const sistemasConcluidos = userData?.sistemas_concluidos || [];
-  
-  // Pegamos o progresso percentual (vamos assumir que no futuro salvaremos isso no banco como userData.progresso_locomotor)
-  // Por enquanto, se ele não concluiu, é 0%. Se concluiu, é 100%.
-  const getProgresso = (id: string) => {
-    return sistemasConcluidos.includes(id) ? 100 : (userData?.[`progresso_${id}`] || 0);
-  };
+  const concluidos = userData?.sistemas_concluidos || [];
+  const progresso = userData?.progresso_sistemas || {};
 
   return (
-    <ScrollView className="flex-1 bg-gray-50 pt-16 px-6">
-      <View className="mb-8">
-        <Text className="text-3xl font-bold text-gray-800">Sua Jornada</Text>
-        <Text className="text-sm font-medium text-gray-500 mt-1">Complete os sistemas na ordem para avançar</Text>
-      </View>
+    <ScrollView className="flex-1 bg-gray-50 pt-12 px-6">
+      <Text className="text-3xl font-black text-gray-800 mb-8">Sua Jornada</Text>
 
-      <View className="space-y-6 pb-20 relative">
-        {/* Linha vertical que conecta as bolinhas (estética de trilha) */}
-        <View className="absolute left-6 top-10 bottom-10 w-0.5 bg-gray-200 z-0" />
-
+      <View className="pb-10">
         {trilhaSistemas.map((sistema, index) => {
-          // Lógica do bloqueio: O primeiro sistema (index 0) está sempre desbloqueado.
-          // Os outros só desbloqueiam se o sistema ANTERIOR estiver na lista de concluídos.
-          const isBloqueado = index > 0 && !sistemasConcluidos.includes(trilhaSistemas[index - 1].id);
-          const progresso = getProgresso(sistema.id);
-          const Icone = sistema.icon;
+          
+          // --- LÓGICA DE BLOQUEIO E PROGRESSO PROPORCIONAL ---
+          const isConcluido = concluidos.includes(sistema.id);
+          const isLiberado = index === 0 || concluidos.includes(trilhaSistemas[index - 1].id);
+          
+          // Pega os acertos deste sistema e calcula a porcentagem usando a META oficial
+          const acertos = progresso[sistema.id] || 0;
+          let porcentagem = isConcluido ? 100 : Math.round((acertos / sistema.meta) * 100) || 0;
+          
+          // Trava de segurança para não passar de 100% visualmente
+          if (porcentagem > 100) porcentagem = 100;
+
+          const Icon = sistema.icon;
 
           return (
-            <View key={sistema.id} className="flex-row items-center gap-4 z-10 mb-6">
-              {/* Bolinha do Ícone */}
-              <View className={`w-12 h-12 rounded-full items-center justify-center border-4 border-gray-50 shadow-sm ${
-                isBloqueado ? 'bg-gray-300' : 'bg-red-800'
-              }`}>
-                {isBloqueado ? <Lock size={20} color="white" /> : <Icone size={20} color="white" />}
+            <View key={sistema.id} className="mb-6 flex-row">
+              {/* Linha conectora entre as fases */}
+              {index !== trilhaSistemas.length - 1 && (
+                <View className="absolute left-6 top-14 bottom-[-30px] w-0.5 bg-gray-200 z-0" />
+              )}
+
+              {/* Ícone Lateral (Cadeado ou Ícone do Sistema) */}
+              <View className={`w-12 h-12 rounded-full items-center justify-center border-4 z-10 
+                ${isConcluido ? 'bg-red-800 border-red-100' : isLiberado ? 'bg-white border-red-800' : 'bg-gray-100 border-gray-200'}`}
+              >
+                {isLiberado ? (
+                  <Icon size={20} color={isConcluido ? 'white' : '#991b1b'} />
+                ) : (
+                  <Lock size={20} color="#9ca3af" />
+                )}
               </View>
 
-              {/* Cartão do Sistema */}
-              <TouchableOpacity 
-                activeOpacity={0.8}
-                disabled={isBloqueado}
-                onPress={() => router.push(`/fases/${sistema.id}` as any)} // Rota futura para a tela do jogo
-                className={`flex-1 p-4 rounded-2xl border bg-white ${
-                  isBloqueado ? 'border-gray-100 opacity-70' : 'border-gray-200 shadow-sm'
-                }`}
+              {/* Card da Fase */}
+              <TouchableOpacity
+                disabled={!isLiberado}
+                onPress={() => router.push(`/fases/${sistema.id}` as any)}
+                className={`flex-1 ml-4 p-5 rounded-3xl border shadow-sm
+                  ${isLiberado ? 'bg-white border-gray-100' : 'bg-gray-50 border-gray-200 opacity-70'}`}
               >
-                <View className="flex-row justify-between items-end mb-2">
-                  <View className="flex-1">
-                    <Text className={`font-bold text-lg ${isBloqueado ? 'text-gray-400' : 'text-gray-800'}`}>
-                      {sistema.nome}
-                    </Text>
-                    <Text className="text-xs text-gray-400 mt-0.5">
-                      {isBloqueado ? 'Complete o sistema anterior para desbloquear' : sistema.desc}
-                    </Text>
-                  </View>
-                  {!isBloqueado && (
-                    <Text className="text-xs font-bold text-gray-500 ml-2">{progresso}%</Text>
+                <View className="flex-row justify-between items-center mb-2">
+                  <Text className={`font-bold text-lg ${isLiberado ? 'text-gray-800' : 'text-gray-400'}`}>
+                    {sistema.nome}
+                  </Text>
+                  {isLiberado && (
+                    <Text className="text-xs font-black text-gray-800">{porcentagem}%</Text>
                   )}
                 </View>
+                
+                <Text className={`text-xs mb-4 ${isLiberado ? 'text-gray-500' : 'text-gray-400'}`}>
+                  {isLiberado ? sistema.desc : 'Complete o sistema anterior para desbloquear'}
+                </Text>
 
-                {/* Barra de Progresso Interna */}
-                <View className="w-full h-2 rounded-full overflow-hidden bg-gray-100 mt-1">
-                  {!isBloqueado && (
+                {/* Barra de Progresso Interna da Fase */}
+                {isLiberado && (
+                  <View className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
                     <View 
-                      className="h-full bg-red-800 rounded-full" 
-                      style={{ width: `${progresso}%` }} 
+                      className={`h-full rounded-full ${isConcluido ? 'bg-green-500' : 'bg-red-800'}`}
+                      style={{ width: `${porcentagem}%` }} 
                     />
-                  )}
-                </View>
+                  </View>
+                )}
               </TouchableOpacity>
             </View>
           );

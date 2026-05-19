@@ -1,9 +1,10 @@
 import { useRouter } from 'expo-router';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
 import { ArrowLeft, CheckCircle, Trophy, XCircle } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { db } from '../config/firebase';
+import { auth, db } from '../config/firebase';
+import { trilhaSistemas } from '../config/SistemasConfig';
 
 // Interface para garantir que o TypeScript conheça as propriedades da Questão
 interface Questao {
@@ -54,7 +55,7 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
       const embaralhadas = questoesBaixadas.sort(() => Math.random() - 0.5);
       
       // Se for simulado, limita a 10 questões. Se for jornada, pode mostrar todas do sistema.
-      setQuestoes(sistemaId ? embaralhadas : embaralhadas.slice(0, 10));
+      setQuestoes(embaralhadas.slice(0, 10));
     } catch (error) {
       console.error("Erro ao carregar questões:", error);
     } finally {
@@ -75,6 +76,61 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
     }
   };
 
+  const cheatAcertar = () => {
+  if (mostrandoFeedback) return; // Impede clicar duas vezes na mesma questão
+  
+  const questao = questoes[perguntaAtual];
+  setOpcaoSelecionada(questao.resposta_correta);
+  setMostrandoFeedback(true);
+  setAcertos((prev) => prev + 1);
+  setXpGanho((prev) => prev + (questao.xp_recompensa || 10));
+  };
+
+  const finalizarQuiz = async () => {
+    setQuizFinalizado(true); 
+    if (!auth.currentUser) return;
+
+    try {
+      const userRef = doc(db, 'usuarios', auth.currentUser.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        const novoXp = (userData.xp || 0) + xpGanho;
+        const novoNivel = Math.floor(novoXp / 100) + 1;
+
+        let dadosParaAtualizar: any = { xp: novoXp, nivel: novoNivel };
+
+        // --- LÓGICA DE PROGRESSO PROPORCIONAL ---
+        if (sistemaId) {
+          // 1. Puxa os acertos antigos e soma com os novos
+          const progressoSistemas = userData.progresso_sistemas || {};
+          const acertosAnteriores = progressoSistemas[sistemaId] || 0;
+          const novoTotalAcertos = acertosAnteriores + acertos;
+          
+          progressoSistemas[sistemaId] = novoTotalAcertos;
+          dadosParaAtualizar.progresso_sistemas = progressoSistemas;
+
+          // 2. Verifica se já atingiu a meta para platinar a fase!
+          const sistemaConfig = trilhaSistemas.find(s => s.id === sistemaId);
+          const concluidos = userData.sistemas_concluidos || [];
+
+          if (sistemaConfig && novoTotalAcertos >= sistemaConfig.meta) {
+            if (!concluidos.includes(sistemaId)) {
+              dadosParaAtualizar.sistemas_concluidos = [...concluidos, sistemaId];
+            }
+          }
+        }
+
+        await updateDoc(userRef, dadosParaAtualizar);
+      }
+    } catch (error) {
+      console.error("Erro ao salvar progresso:", error);
+    }
+  };
+
+  
+
   const proximaPergunta = () => {
     if (perguntaAtual < questoes.length - 1) {
       // Vai para a próxima pergunta
@@ -83,7 +139,7 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
       setMostrandoFeedback(false);
     } else {
       // Finaliza o jogo ativando a tela de vitória
-      setQuizFinalizado(true);
+      finalizarQuiz();
     }
   };
 
@@ -164,14 +220,25 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
 
       <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
         {/* Pergunta */}
-        <View className="mb-8">
-          <View className="bg-red-50 self-start px-3 py-1 rounded-md mb-3">
+      <View className="mb-8">
+        <View className="flex-row justify-between items-center mb-3">
+          <View className="bg-red-50 px-3 py-1 rounded-md">
             <Text className="text-red-800 font-bold text-xs uppercase">{questao.sistema}</Text>
           </View>
-          <Text className="text-xl font-bold text-gray-800 leading-snug">
-            {questao.pergunta}
-          </Text>
+          {/* BOTÃO DE CHEAT TEMPORÁRIO */}
+          {!mostrandoFeedback && (
+            <TouchableOpacity 
+              onPress={cheatAcertar} 
+              className="bg-amber-100 px-3 py-1 rounded-md border border-amber-300 active:bg-amber-200"
+            >
+              <Text className="text-amber-800 font-black text-xs">⚡ Auto-Acertar</Text>
+            </TouchableOpacity>
+          )}
         </View>
+        <Text className="text-xl font-bold text-gray-800 leading-snug">
+          {questao.pergunta}
+        </Text>
+      </View>
 
         {/* Alternativas */}
         <View className="space-y-3 mb-8">
