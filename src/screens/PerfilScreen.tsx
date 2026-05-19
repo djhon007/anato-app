@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import { Activity, Award, BookOpen, Edit2, Star, Trophy, X, Zap } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Image, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-
+import { trilhaSistemas } from '../config/SistemasConfig';
 // Importações do Firebase
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
@@ -25,6 +25,20 @@ export default function PerfilScreen() {
   useEffect(() => {
     carregarPerfil();
   }, []);
+
+  // --- MATEMÁTICA PARA A TELA DE PERFIL ---
+  const concluidos = userData?.sistemas_concluidos || [];
+  const progresso = userData?.progresso_sistemas || {};
+
+  let iniciadosCount = 0;
+
+  trilhaSistemas.forEach((sistema) => {
+    const acertosDesteSistema = progresso[sistema.id] || 0;
+    // Se tem acertos mas não está concluído, conta como iniciado!
+    if (acertosDesteSistema > 0 && !concluidos.includes(sistema.id)) {
+      iniciadosCount++;
+    }
+  });
 
   const carregarPerfil = async () => {
     if (!auth.currentUser) return;
@@ -135,7 +149,7 @@ export default function PerfilScreen() {
           </View>
           <View className="flex-1 bg-white border border-gray-100 p-4 rounded-3xl items-center shadow-sm">
             <Activity size={24} color="#991b1b" className="mb-2" />
-            <Text className="text-xl font-black text-gray-800">0</Text>
+            <Text className="text-xl font-black text-gray-800">{iniciadosCount}</Text>
             <Text className="text-[10px] text-gray-400 font-bold uppercase mt-1">Sistemas Iniciados</Text>
           </View>
         </View>
