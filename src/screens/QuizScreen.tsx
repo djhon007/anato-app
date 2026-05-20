@@ -75,7 +75,7 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
       setXpGanho(xpGanho + (questao.xp_recompensa || 10)); 
     }
   };
-
+  /*
   const cheatAcertar = () => {
   if (mostrandoFeedback) return; // Impede clicar duas vezes na mesma questão
   
@@ -85,7 +85,7 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
   setAcertos((prev) => prev + 1);
   setXpGanho((prev) => prev + (questao.xp_recompensa || 10));
   };
-
+  */
   const finalizarQuiz = async () => {
     setQuizFinalizado(true); 
     if (!auth.currentUser) return;
@@ -226,6 +226,7 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
             <Text className="text-red-800 font-bold text-xs uppercase">{questao.sistema}</Text>
           </View>
           {/* BOTÃO DE CHEAT TEMPORÁRIO */}
+          {/*
           {!mostrandoFeedback && (
             <TouchableOpacity 
               onPress={cheatAcertar} 
@@ -234,6 +235,7 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
               <Text className="text-amber-800 font-black text-xs">⚡ Auto-Acertar</Text>
             </TouchableOpacity>
           )}
+          */}
         </View>
         <Text className="text-xl font-bold text-gray-800 leading-snug">
           {questao.pergunta}
