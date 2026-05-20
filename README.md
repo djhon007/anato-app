@@ -39,12 +39,14 @@ Este projeto utiliza variáveis de ambiente para a conexão com o Firebase. O ar
 Peça as chaves de acesso ao administrador do projeto e crie um arquivo chamado .env na raiz do projeto com o seguinte formato:
 
 Snippet de código
+```
 EXPO_PUBLIC_FIREBASE_API_KEY=xxx
 EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=xxx
 EXPO_PUBLIC_FIREBASE_PROJECT_ID=xxx
 EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=xxx
 EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=xxx
 EXPO_PUBLIC_FIREBASE_APP_ID=xxx
+```
 
 
 4. Execução
