@@ -2534,3 +2534,5 @@ export const listaDeQuestoes: Question[] = [
   }
 
 ];
+
+//NAO MEXER, BASE DE DADOS DE PERGUNTAS PARA O JOGO

@@ -1,21 +1,18 @@
 import { useRouter } from 'expo-router';
 import { ArrowLeft, Save } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { 
-  ActivityIndicator, 
-  Alert, 
-  KeyboardAvoidingView, 
-  Platform, 
-  ScrollView, 
-  Text, 
-  TextInput, 
-  TouchableOpacity, 
-  View, 
-  Button, 
-  StyleSheet 
+import {
+  ActivityIndicator,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import { cadastrarQuestao } from '../services/questoesService';
-import { executarSeeder } from '../services/seederService'; // Importação do seeder centralizada
 
 export default function CadastrarQuestaoScreen() {
   const router = useRouter();
@@ -47,7 +44,7 @@ export default function CadastrarQuestaoScreen() {
       pergunta,
       opcoes,
       resposta_correta: respostaCorreta,
-      sistema,
+      sistema: sistema.toLowerCase(), // Boa prática: salva sempre em minúsculo para a Jornada reconhecer
       dificuldade: Number(dificuldade),
       xp_recompensa: Number(xp),
       explicacao
@@ -82,7 +79,7 @@ export default function CadastrarQuestaoScreen() {
         <View className="flex-row gap-4 mb-6">
           <View className="flex-1">
             <Text className="text-xs font-bold text-gray-500 mb-1 uppercase">Sistema / Tópico</Text>
-            <TextInput value={sistema} onChangeText={setSistema} placeholder="Ex: Ósseo" className="bg-white border border-gray-200 rounded-xl p-3 text-gray-800" />
+            <TextInput value={sistema} onChangeText={setSistema} placeholder="Ex: osteologia" className="bg-white border border-gray-200 rounded-xl p-3 text-gray-800" />
           </View>
           <View className="w-20">
             <Text className="text-xs font-bold text-gray-500 mb-1 uppercase">Nível</Text>
@@ -154,39 +151,8 @@ export default function CadastrarQuestaoScreen() {
             </>
           )}
         </TouchableOpacity>
-
-        {/* BOTÃO DO SEEDER (Aparece no final da lista) */}
-        <View style={styles.seederContainer}>
-          <Text style={styles.devText}>Ações de Desenvolvedor:</Text>
-          <Button 
-            title="CARREGAR AS 50 QUESTÕES NO FIREBASE" 
-            onPress={executarSeeder} 
-            color="#ff4444"
-          />
-        </View>
         
       </ScrollView>
     </KeyboardAvoidingView>
   );
 }
-
-// Estilos extras para o seeder
-const styles = StyleSheet.create({
-  seederContainer: {
-    marginTop: 20,
-    padding: 20,
-    backgroundColor: '#fff',
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: '#eee',
-    borderStyle: 'dashed'
-  },
-  devText: {
-    textAlign: 'center',
-    color: '#999',
-    fontSize: 12,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textTransform: 'uppercase'
-  }
-});
