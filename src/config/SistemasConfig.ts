@@ -5,6 +5,6 @@ export const trilhaSistemas = [
   { id: 'osteologia', nome: 'Osteologia', desc: 'Estudo dos ossos e esqueleto', icon: Bone, meta: 45 },
   { id: 'artrologia', nome: 'Artrologia', desc: 'Estudo das articulações', icon: Activity, meta: 47 },
   { id: 'miologia', nome: 'Miologia', desc: 'Estudo dos músculos e movimentos', icon: Dumbbell, meta: 34 },
-  { id: 'nervoso', nome: 'Sistema Nervoso', desc: 'Controle e processamento de informações', icon: Brain, meta: 30 },
-  { id: 'cardiovascular', nome: 'Sistema Cardiovascular', desc: 'Coração e circulação sanguínea', icon: Heart, meta: 14 },
+  { id: 'inervação', nome: 'Sistema Nervoso', desc: 'Controle e processamento de informações', icon: Brain, meta: 30 },
+  { id: 'vascularização', nome: 'Sistema Cardiovascular', desc: 'Coração e circulação sanguínea', icon: Heart, meta: 14 },
 ];

@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+import { trilhaSistemas } from '../config/SistemasConfig';
 import { cadastrarQuestao } from '../services/questoesService';
 
 export default function CadastrarQuestaoScreen() {
@@ -22,7 +23,7 @@ export default function CadastrarQuestaoScreen() {
   const [pergunta, setPergunta] = useState('');
   const [opcoes, setOpcoes] = useState(['', '', '', '']); 
   const [respostaCorreta, setRespostaCorreta] = useState(0); 
-  const [sistema, setSistema] = useState('');
+  const [sistema, setSistema] = useState(trilhaSistemas[0].id);
   const [dificuldade, setDificuldade] = useState('1'); 
   const [xp, setXp] = useState('10'); 
   const [explicacao, setExplicacao] = useState('');
@@ -76,11 +77,26 @@ export default function CadastrarQuestaoScreen() {
       <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 100 }} showsVerticalScrollIndicator={false}>
         
         {/* Tópico e Configurações */}
+        <View className="mb-6">
+          <Text className="text-xs font-bold text-gray-500 mb-2 uppercase">Sistema / Tópico</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row overflow-visible">
+            {trilhaSistemas.map((sys) => (
+              <TouchableOpacity
+                key={sys.id}
+                onPress={() => setSistema(sys.id)}
+                className={`mr-2 px-4 py-2 rounded-xl border-2 ${
+                  sistema === sys.id ? 'bg-red-800 border-red-800' : 'bg-white border-gray-200'
+                }`}
+              >
+                <Text className={`font-bold ${sistema === sys.id ? 'text-white' : 'text-gray-600'}`}>
+                  {sys.nome}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+
         <View className="flex-row gap-4 mb-6">
-          <View className="flex-1">
-            <Text className="text-xs font-bold text-gray-500 mb-1 uppercase">Sistema / Tópico</Text>
-            <TextInput value={sistema} onChangeText={setSistema} placeholder="Ex: osteologia" className="bg-white border border-gray-200 rounded-xl p-3 text-gray-800" />
-          </View>
           <View className="w-20">
             <Text className="text-xs font-bold text-gray-500 mb-1 uppercase">Nível</Text>
             <TextInput value={dificuldade} onChangeText={setDificuldade} keyboardType="numeric" className="bg-white border border-gray-200 rounded-xl p-3 text-gray-800 text-center" />
