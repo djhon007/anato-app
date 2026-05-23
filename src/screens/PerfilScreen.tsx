@@ -85,10 +85,12 @@ export default function PerfilScreen() {
 
   const achievements = [
     { title: 'Iniciante', desc: 'Completou a primeira fase', icon: <Zap size={20} color="#ef4444" />, done: true },
-    { title: 'Estudioso', desc: 'Completou 2/128 fases', icon: <BookOpen size={20} color="#9ca3af" />, done: false },
-    { title: 'Explorador', desc: 'Iniciou 2/7 sistemas', icon: <Activity size={20} color="#9ca3af" />, done: false },
-    { title: 'Mestre', desc: 'Completou 1/7 sistemas', icon: <Award size={20} color="#9ca3af" />, done: false },
+    { title: 'Estudioso', desc: 'Completou 2/25 fases', icon: <BookOpen size={20} color="#9ca3af" />, done: false },
+    { title: 'Explorador', desc: 'Iniciou 2/5 sistemas', icon: <Activity size={20} color="#9ca3af" />, done: false },
+    { title: 'Mestre', desc: 'Completou 1/5 sistemas', icon: <Award size={20} color="#9ca3af" />, done: false },
   ];
+
+  const opcoesPeriodo = ['1º período', '2º período', '3º período', '4º período', '5º período', '6º período', '7º período', '8º período', '9º período', '10º período', '11º período', '12º período', 'Professor', 'Monitor', 'Outro'];
 
   return (
     <ScrollView className="flex-1 bg-white">
@@ -173,50 +175,68 @@ export default function PerfilScreen() {
         </View>
 
         {/* BOTÃO PROVISÓRIO DE ADMIN */}
-        <TouchableOpacity 
+        {/*<TouchableOpacity 
           onPress={() => router.push('/cadastrar-questao' as any)}
           className="bg-gray-900 p-4 rounded-2xl flex-row justify-center items-center shadow-md mb-10 border border-gray-800"
         >
           <Text className="text-white font-bold text-center">🛠️ Cadastrar Questões (Admin)</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>*/}
       </View>
 
       {/* MODAL DE EDIÇÃO DE PERFIL */}
-      <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
-        <View className="flex-1 justify-end bg-black/50">
-          <View className="bg-white rounded-t-3xl p-6">
-            <View className="flex-row justify-between items-center mb-6">
-              <Text className="text-xl font-bold text-gray-800">Editar Perfil</Text>
-              <TouchableOpacity onPress={() => setModalVisible(false)} className="p-2 bg-gray-100 rounded-full">
-                <X size={20} color="#374151" />
-              </TouchableOpacity>
-            </View>
-
-            <View className="space-y-4 mb-8">
-              <View>
-                <Text className="text-xs font-bold text-gray-500 mb-1 uppercase">Nome de Exibição</Text>
-                <TextInput value={formNome} onChangeText={setFormNome} placeholder="Seu nome" className="bg-gray-50 border border-gray-200 rounded-xl p-3 text-gray-800" />
-              </View>
-              <View>
-                <Text className="text-xs font-bold text-gray-500 mb-1 uppercase">Curso</Text>
-                <TextInput value={formCurso} onChangeText={setFormCurso} placeholder="Ex: Enfermagem, Medicina..." className="bg-gray-50 border border-gray-200 rounded-xl p-3 text-gray-800" />
-              </View>
-              <View>
-                <Text className="text-xs font-bold text-gray-500 mb-1 uppercase">Período / Semestre</Text>
-                <TextInput value={formPeriodo} onChangeText={setFormPeriodo} placeholder="Ex: 3º Período" className="bg-gray-50 border border-gray-200 rounded-xl p-3 text-gray-800" />
-              </View>
-            </View>
-
-            <TouchableOpacity 
-              onPress={salvarEdicao} 
-              disabled={saving}
-              className="bg-red-800 p-4 rounded-2xl items-center flex-row justify-center shadow-sm"
-            >
-              {saving ? <ActivityIndicator color="white" /> : <Text className="text-white font-bold text-lg">Salvar Alterações</Text>}
-            </TouchableOpacity>
-          </View>
+  <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
+    <View className="flex-1 justify-end bg-black/50">
+      <View className="bg-white rounded-t-3xl p-6">
+        <View className="flex-row justify-between items-center mb-6">
+          <Text className="text-xl font-bold text-gray-800">Editar Perfil</Text>
+          <TouchableOpacity onPress={() => setModalVisible(false)} className="p-2 bg-gray-100 rounded-full">
+            <X size={20} color="#374151" />
+          </TouchableOpacity>
         </View>
-      </Modal>
+
+        <View className="space-y-4 mb-8">
+          <View>
+            <Text className="text-xs font-bold text-gray-500 mb-1 uppercase">Nome de Exibição</Text>
+            <TextInput value={formNome} onChangeText={setFormNome} placeholder="O seu nome" className="bg-gray-50 border border-gray-200 rounded-xl p-3 text-gray-800" />
+          </View>
+          <View>
+            <Text className="text-xs font-bold text-gray-500 mb-1 uppercase">Curso</Text>
+            <TextInput value={formCurso} onChangeText={setFormCurso} placeholder="Ex: Enfermagem, Medicina..." className="bg-gray-50 border border-gray-200 rounded-xl p-3 text-gray-800" />
+          </View>
+          
+          {/* NOVO: LIMITADOR DE PERÍODO COM BOTÕES */}
+          <View>
+            <Text className="text-xs font-bold text-gray-500 mb-2 uppercase">Período / Semestre</Text>
+            <View className="flex-row flex-wrap gap-2">
+              {opcoesPeriodo.map((p) => (
+                <TouchableOpacity
+                  key={p}
+                  onPress={() => setFormPeriodo(p)}
+                  className={`px-4 py-2 rounded-xl border-2 ${
+                    formPeriodo === p ? 'bg-red-800 border-red-800' : 'bg-white border-gray-200'
+                  }`}
+                >
+                  <Text className={`font-bold ${formPeriodo === p ? 'text-white' : 'text-gray-600'}`}>
+                    {p}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+          {/* FIM DO LIMITADOR */}
+
+        </View>
+
+        <TouchableOpacity 
+          onPress={salvarEdicao} 
+          disabled={saving}
+          className="bg-red-800 p-4 rounded-2xl items-center flex-row justify-center shadow-sm"
+        >
+          {saving ? <ActivityIndicator color="white" /> : <Text className="text-white font-bold text-lg">Salvar Alterações</Text>}
+        </TouchableOpacity>
+      </View>
+    </View>
+  </Modal>
 
     </ScrollView>
   );
