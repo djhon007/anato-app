@@ -9,13 +9,19 @@ export default function EstudoScreen() {
 
   const videoContent: Record<string, any[]> = {
     '1ª temporada': [ 
-      { id: 1, title: 'Introdução à Anatomia [01/02]', dur: '12:45', url: 'https://youtube.com' },
-      { id: 2, title: 'Planos e Eixos Anatômicos', dur: '15:20', url: 'https://youtube.com' },
-      { id: 3, title: 'Termos de Posição e Direção', dur: '10:15', url: 'https://youtube.com' },
+      { id: 1, title: 'Introdução à Anatomia [01/02]', dur: '16:58', url: 'https://www.youtube.com/watch?v=G9W3XsaYL7M' },
+      { id: 2, title: 'Introdução à Anatomia [02/02]', dur: '15:20', url: 'https://www.youtube.com/watch?v=SzUlkkG0pBE' },
+      { id: 3, title: 'Generalidade dos Ossos', dur: '18:30', url: 'https://www.youtube.com/watch?v=0oNC4QcP6rc' },
+      { id: 4, title: 'Nomenclatura dos Ossos [Esqueleto Axial]', dur: '18:57', url: 'https://www.youtube.com/watch?v=01pjWGIa3Xk' },
+      { id: 5, title: 'AnatoAula - Nomenclatura dos Ossos [Esqueleto Apendicular]', dur: '28:11', url: 'https://www.youtube.com/watch?v=gJqak1X0dGs' },
+      { id: 6, title: 'Anatoaula - Generalidade das Articulações', dur: '25:43', url: 'https://www.youtube.com/watch?v=FEINjQfcVfA' },
+      { id: 7, title: 'Anatoaula - Articulações Sinoviais', dur: '28:02', url: 'https://www.youtube.com/watch?v=flyFoF4YwFc' },
+      { id: 8, title: 'Anatoaula - Generalidades dos Músculos [01/02]', dur: '20:15', url: 'https://www.youtube.com/watch?v=htvcAjgQ78M' },
+      { id: 9, title: 'Anatoaula - Generalidades dos Músculos [02/02]', dur: '23:53', url: 'https://www.youtube.com/watch?v=F0j3BJR1r8c' },
     ],
     '2ª temporada': [
-      { id: 4, title: 'Osteologia Básica', dur: '18:30', url: 'https://youtube.com' },
-      { id: 5, title: 'Divisões do Esqueleto', dur: '14:50', url: 'https://youtube.com' },
+      { id: 10, title: 'Osteologia Básica', dur: '18:30', url: 'https://www.youtube.com/watch?v=0oNC4QcP6rc' },
+      { id: 11, title: 'Divisões do Esqueleto', dur: '14:50', url: 'https://www.youtube.com/watch?v=01pjWGIa3Xk' },
     ]
   };
 
