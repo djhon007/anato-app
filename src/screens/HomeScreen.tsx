@@ -3,10 +3,10 @@ import { doc, getDoc } from 'firebase/firestore';
 import { Activity, BookOpen, ChevronRight, ClipboardCheck, GraduationCap, Map as MapIcon, Trophy } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { trilhaSistemas } from '../config/SistemasConfig';
 
-// Importações do Firebase consolidadas
+// Importações do Firebase consolidadas e Nova Trilha
 import { auth, db } from '../config/firebase';
+import { trilhaRegioes } from '../config/SistemasConfig';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -23,31 +23,39 @@ export default function HomeScreen() {
     carregarDados();
   }, []);
 
-  const concluidos = userData?.sistemas_concluidos || [];
+  // Lemos regioes_concluidas (com fallback para sistemas_concluidos para não quebrar usuários antigos)
+  const concluidos = userData?.regioes_concluidas || userData?.sistemas_concluidos || [];
   const progresso = userData?.progresso_sistemas || {};
 
   let iniciadosCount = 0;
   let porcentagemTotal = 0;
-  const pesoPorSistema = 100 / trilhaSistemas.length;
+  
+  // Trava contra divisão por zero
+  const pesoPorRegiao = 100 / (trilhaRegioes?.length || 1);
 
-  trilhaSistemas.forEach((sistema) => {
-    const acertosDesteSistema = progresso[sistema.id] || 0;
+  // NOVA LÓGICA V2: Iterando sobre trilhaRegioes em vez de trilhaSistemas
+  trilhaRegioes?.forEach((regiao) => {
+    // Soma todos os acertos desta região específica
+    const acertosDaRegiao = Object.keys(progresso)
+      .filter(key => key.startsWith(`${regiao.id}_`))
+      .reduce((acc, key) => acc + progresso[key], 0);
 
-    if (acertosDesteSistema > 0 && !concluidos.includes(sistema.id)) {
+    if (acertosDaRegiao > 0 && !concluidos.includes(regiao.id)) {
       iniciadosCount++;
     }
 
-    let progressoFracionado = (acertosDesteSistema / sistema.meta) * pesoPorSistema;
+    let progressoFracionado = (acertosDaRegiao / regiao.meta) * pesoPorRegiao;
 
-    if (progressoFracionado > pesoPorSistema) {
-      progressoFracionado = pesoPorSistema;
+    // Trava para não passar do peso máximo por região
+    if (progressoFracionado > pesoPorRegiao) {
+      progressoFracionado = pesoPorRegiao;
     }
 
     porcentagemTotal += progressoFracionado;
   });
 
   const progressoPercentual = Math.round(porcentagemTotal) || 0;
-  const sistemasConcluidosCount = concluidos.length;
+  const regioesConcluidasCount = (concluidos || []).length;
   
   // Tenta pegar o nome que está no banco. Se não tiver, usa o e-mail antes do @. Se não tiver, usa 'Estudante'
   const userName = userData?.nome || (user?.email ? user.email.split('@')[0] : 'Estudante');
@@ -59,7 +67,7 @@ export default function HomeScreen() {
         <View className="flex-row items-center justify-between">
           <View className="flex-row items-center gap-3">
             <View className="w-14 h-14 rounded-full overflow-hidden border-2 border-red-800 p-0.5">
-              <Image source={{ uri: "https://picsum.photos/seed/ana/100/100" }} className="w-full h-full rounded-full" />
+              <Image source={{ uri: "https://api.dicebear.com/8.x/notionists/png?seed=Milo&backgroundColor=fca5a5" }} className="w-full h-full rounded-full" />
             </View>
             <View>
               <Text className="font-bold text-lg text-gray-800 capitalize">{userName}</Text>
@@ -78,7 +86,7 @@ export default function HomeScreen() {
             </View>
             <View>
               <Text className="text-[10px] font-bold uppercase tracking-wider text-red-800">Conquistas</Text>
-              <Text className="text-sm font-bold text-gray-800">{sistemasConcluidosCount} Fases</Text>
+              <Text className="text-sm font-bold text-gray-800">{regioesConcluidasCount} Fases</Text>
             </View>
           </View>
           <View className="flex-1 p-3 rounded-2xl flex-row items-center gap-3 border bg-red-50 border-red-100">
@@ -86,8 +94,8 @@ export default function HomeScreen() {
               <Activity size={18} color="#991b1b" />
             </View>
             <View>
-              <Text className="text-[10px] font-bold uppercase tracking-wider text-red-800">Sistemas</Text>
-              <Text className="text-sm font-bold text-gray-800">{iniciadosCount} Iniciados</Text>
+              <Text className="text-[10px] font-bold uppercase tracking-wider text-red-800">Regiões</Text>
+              <Text className="text-sm font-bold text-gray-800">{iniciadosCount} Iniciadas</Text>
             </View>
           </View>
         </View>
@@ -100,7 +108,7 @@ export default function HomeScreen() {
           <View className="flex-row justify-between items-end mb-3">
             <View>
               <Text className="text-gray-500 font-medium text-sm">Progresso Geral</Text>
-              <Text className="text-xs text-gray-400 mt-0.5">{sistemasConcluidosCount} de {trilhaSistemas.length} Fases Completas</Text>
+              <Text className="text-xs text-gray-400 mt-0.5">{regioesConcluidasCount} de {trilhaRegioes?.length || 0} Fases Completas</Text>
             </View>
             <Text className="text-xl font-black text-gray-800">{progressoPercentual}%</Text>
           </View>
@@ -176,7 +184,7 @@ export default function HomeScreen() {
              <View className="flex-1">
                <Text className="text-white font-bold text-sm">Dica:</Text>
                <Text className="text-white/90 text-xs leading-relaxed mt-1">
-                 Complete fases na jornada para desbloquear novos conteúdos e conquistas!
+                 Complete as regiões na jornada para desbloquear novos conteúdos e conquistas!
                </Text>
              </View>
           </View>

@@ -4,14 +4,14 @@ import { ArrowLeft, CheckCircle, Trophy, XCircle } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { auth, db } from '../config/firebase';
-import { trilhaSistemas } from '../config/SistemasConfig';
+import { trilhaRegioes } from '../config/SistemasConfig'; // CORREÇÃO: Importar a nova trilha
 
-// Interface para garantir que o TypeScript conheça as propriedades da Questão
 interface Questao {
   pergunta: string;
   opcoes: string[];
   resposta_correta: number;
   explicacao: string;
+  regiao: string; // Adicionado
   sistema: string;
   xp_recompensa: number;
 }
@@ -27,7 +27,7 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
   const [mostrandoFeedback, setMostrandoFeedback] = useState(false);
   const [acertos, setAcertos] = useState(0);
   const [xpGanho, setXpGanho] = useState(0);
-  const [quizFinalizado, setQuizFinalizado] = useState(false); // Estado que controla o fim do jogo
+  const [quizFinalizado, setQuizFinalizado] = useState(false); 
 
   useEffect(() => {
     carregarQuestoes();
@@ -41,12 +41,19 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
       querySnapshot.forEach((doc) => {
         const data = doc.data() as Questao;
         
-        // Se vier da Jornada (tem sistemaId), filtra pelo sistema. Se não, pega todas (Simulado).
+        // V2 Lógica: Se vier da SubJornada, o sistemaId será algo como "superior_osteologia"
         if (sistemaId) {
-          if (data.sistema && data.sistema.toLowerCase() === sistemaId.toLowerCase()) {
+          // Precisamos separar "superior" e "osteologia"
+          const [regiaoReq, sistemaReq] = sistemaId.split('_');
+          
+          if (
+            data.regiao?.toLowerCase() === regiaoReq?.toLowerCase() && 
+            data.sistema?.toLowerCase() === sistemaReq?.toLowerCase()
+          ) {
             questoesBaixadas.push(data);
           }
         } else {
+          // Modo Simulado: Puxa todas
           questoesBaixadas.push(data);
         }
       });
@@ -54,8 +61,8 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
       // Embaralha as questões
       const embaralhadas = questoesBaixadas.sort(() => Math.random() - 0.5);
       
-      // Se for simulado, limita a 10 questões. Se for jornada, pode mostrar todas do sistema.
-      setQuestoes(embaralhadas.slice(0, 10));
+      // Se for simulado, limita a 10 questões. Se for jornada, pode mostrar todas.
+      setQuestoes(!sistemaId ? embaralhadas.slice(0, 10) : embaralhadas);
     } catch (error) {
       console.error("Erro ao carregar questões:", error);
     } finally {
@@ -71,21 +78,10 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
     const questao = questoes[perguntaAtual];
     if (opcaoSelecionada === questao.resposta_correta) {
       setAcertos(acertos + 1);
-      // Se a questão não tiver XP cadastrado, dá 10 por padrão
       setXpGanho(xpGanho + (questao.xp_recompensa || 10)); 
     }
   };
-  /*
-  const cheatAcertar = () => {
-  if (mostrandoFeedback) return; // Impede clicar duas vezes na mesma questão
-  
-  const questao = questoes[perguntaAtual];
-  setOpcaoSelecionada(questao.resposta_correta);
-  setMostrandoFeedback(true);
-  setAcertos((prev) => prev + 1);
-  setXpGanho((prev) => prev + (questao.xp_recompensa || 10));
-  };
-  */
+
   const finalizarQuiz = async () => {
     setQuizFinalizado(true); 
     if (!auth.currentUser) return;
@@ -101,23 +97,30 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
 
         let dadosParaAtualizar: any = { xp: novoXp, nivel: novoNivel };
 
-        // --- LÓGICA DE PROGRESSO PROPORCIONAL ---
+        // --- LÓGICA DE PROGRESSO PROPORCIONAL V2 ---
         if (sistemaId) {
-          // 1. Puxa os acertos antigos e soma com os novos
+          // 1. Guarda o progresso da chave composta (ex: "superior_osteologia")
           const progressoSistemas = userData.progresso_sistemas || {};
           const acertosAnteriores = progressoSistemas[sistemaId] || 0;
-          const novoTotalAcertos = acertosAnteriores + acertos;
+          progressoSistemas[sistemaId] = acertosAnteriores + acertos;
           
-          progressoSistemas[sistemaId] = novoTotalAcertos;
           dadosParaAtualizar.progresso_sistemas = progressoSistemas;
 
-          // 2. Verifica se já atingiu a meta para platinar a fase!
-          const sistemaConfig = trilhaSistemas.find(s => s.id === sistemaId);
-          const concluidos = userData.sistemas_concluidos || [];
+          // 2. Verifica se platinou a macro região inteira (ex: "superior")
+          const [regiaoAtual] = sistemaId.split('_'); // Pega só o "superior"
+          const regiaoConfig = trilhaRegioes?.find(r => r.id === regiaoAtual);
+          
+          if (regiaoConfig) {
+            // Conta os acertos totais dessa região
+            const totalAcertosRegiao = Object.keys(progressoSistemas)
+              .filter(key => key.startsWith(`${regiaoAtual}_`))
+              .reduce((acc, key) => acc + progressoSistemas[key], 0);
 
-          if (sistemaConfig && novoTotalAcertos >= sistemaConfig.meta) {
-            if (!concluidos.includes(sistemaId)) {
-              dadosParaAtualizar.sistemas_concluidos = [...concluidos, sistemaId];
+            const concluidos = userData.regioes_concluidas || userData.sistemas_concluidos || [];
+
+            // Se o total de acertos bater a meta da região (ex: 37)
+            if (totalAcertosRegiao >= regiaoConfig.meta && !concluidos.includes(regiaoAtual)) {
+               dadosParaAtualizar.regioes_concluidas = [...concluidos, regiaoAtual];
             }
           }
         }
@@ -129,21 +132,17 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
     }
   };
 
-  
-
   const proximaPergunta = () => {
     if (perguntaAtual < questoes.length - 1) {
-      // Vai para a próxima pergunta
       setPerguntaAtual(perguntaAtual + 1);
       setOpcaoSelecionada(null);
       setMostrandoFeedback(false);
     } else {
-      // Finaliza o jogo ativando a tela de vitória
       finalizarQuiz();
     }
   };
 
-  // --- TELAS DE CARREGAMENTO E ERRO (Early Returns) ---
+  // --- TELAS DE CARREGAMENTO E ERRO ---
   if (loading) {
     return (
       <View className="flex-1 justify-center items-center bg-gray-50">
@@ -157,7 +156,7 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
     return (
       <View className="flex-1 justify-center items-center bg-gray-50 px-6 text-center">
         <Text className="text-xl font-bold text-gray-800 mb-2">Ops!</Text>
-        <Text className="text-gray-500 text-center">Nenhuma questão encontrada para este modo.</Text>
+        <Text className="text-gray-500 text-center">Nenhuma questão encontrada para este módulo.</Text>
         <TouchableOpacity onPress={() => router.back()} className="mt-6 bg-red-800 px-6 py-3 rounded-xl">
           <Text className="text-white font-bold">Voltar</Text>
         </TouchableOpacity>
@@ -165,14 +164,14 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
     );
   }
 
-  // --- TELA DE VITÓRIA: Aparece apenas quando o jogo acaba ---
+  // --- TELA DE VITÓRIA ---
   if (quizFinalizado) {
     return (
       <View className="flex-1 bg-gray-50 justify-center items-center px-6">
         <View className="w-24 h-24 bg-red-100 rounded-full items-center justify-center mb-6">
           <Trophy size={48} color="#991b1b" />
         </View>
-        <Text className="text-3xl font-black text-gray-800 mb-2">Simulado Concluído!</Text>
+        <Text className="text-3xl font-black text-gray-800 mb-2">Módulo Concluído!</Text>
         <Text className="text-gray-500 text-center mb-8">
           Você revisou {questoes.length} questões.
         </Text>
@@ -198,13 +197,12 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
     );
   }
 
-  // --- TELA NORMAL DO JOGO (Se ainda não acabou) ---
+  // --- TELA NORMAL DO JOGO ---
   const questao = questoes[perguntaAtual];
   const acertou = opcaoSelecionada === questao.resposta_correta;
 
   return (
     <View className="flex-1 bg-gray-50">
-      {/* Cabeçalho de Progresso */}
       <View className="bg-white pt-16 pb-4 px-6 border-b border-gray-100 flex-row items-center justify-between shadow-sm z-10">
         <TouchableOpacity onPress={() => router.back()} className="p-2 -ml-2">
           <ArrowLeft size={24} color="#374151" />
@@ -219,30 +217,17 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
       </View>
 
       <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
-        {/* Pergunta */}
       <View className="mb-8">
         <View className="flex-row justify-between items-center mb-3">
           <View className="bg-red-50 px-3 py-1 rounded-md">
             <Text className="text-red-800 font-bold text-xs uppercase">{questao.sistema}</Text>
           </View>
-          {/* BOTÃO DE CHEAT TEMPORÁRIO */}
-          {/*
-          {!mostrandoFeedback && (
-            <TouchableOpacity 
-              onPress={cheatAcertar} 
-              className="bg-amber-100 px-3 py-1 rounded-md border border-amber-300 active:bg-amber-200"
-            >
-              <Text className="text-amber-800 font-black text-xs">⚡ Auto-Acertar</Text>
-            </TouchableOpacity>
-          )}
-          */}
         </View>
         <Text className="text-xl font-bold text-gray-800 leading-snug">
           {questao.pergunta}
         </Text>
       </View>
 
-        {/* Alternativas */}
         <View className="space-y-3 mb-8">
           {questao.opcoes.map((opcao, index) => {
             const isSelecionada = opcaoSelecionada === index;
@@ -283,7 +268,6 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
           })}
         </View>
 
-        {/* Caixa de Explicação */}
         {mostrandoFeedback && (
           <View className={`p-5 rounded-2xl mb-8 ${acertou ? 'bg-green-100' : 'bg-red-100'}`}>
             <Text className={`font-bold text-lg mb-2 ${acertou ? 'text-green-800' : 'text-red-800'}`}>
@@ -294,7 +278,6 @@ export default function QuizScreen({ sistemaId }: { sistemaId?: string }) {
         )}
       </ScrollView>
 
-      {/* Rodapé fixo com o Botão de Ação */}
       <View className="bg-white p-6 border-t border-gray-100 pb-10">
         {!mostrandoFeedback ? (
           <TouchableOpacity

@@ -30,14 +30,13 @@ export interface AnatomySystem {
 }
 
 export interface Question {
-  id?: number; // Opcional porque o Firestore gera o ID automático
-  sistema: string; // Mudou de sistemaId para sistema
-  subcategoria?: 'superiores' | 'inferiores' | 'tronco'; 
-  especialidade?: 'osteologia' | 'artrologia' | 'miologia';
-  pergunta: string; // Mudou de texto para pergunta
+  id?: string; // O Firestore usa IDs de texto, não números
+  regiao: string; // Ex: 'superior', 'inferior', 'tronco'
+  sistema: string; // Ex: 'osteologia', 'artrologia', 'miologia'
+  pergunta: string;
   opcoes: string[];
-  resposta_correta: number; // Mudou de correta para resposta_correta
+  resposta_correta: number;
   explicacao: string;
-  dificuldade?: number; // Adicione este se quiser usar no seeder
-  xp_recompensa?: number; // Adicione este se quiser usar no seeder
+  dificuldade: number;
+  xp_recompensa: number;
 }

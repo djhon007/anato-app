@@ -6,6 +6,7 @@ export interface Questao {
   pergunta: string;
   opcoes: string[];
   resposta_correta: number;
+  regiao: string;
   sistema: string;
   dificuldade: number;
   xp_recompensa: number;

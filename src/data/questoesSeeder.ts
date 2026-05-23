@@ -1,7 +1,7 @@
 import { Question } from '../types';
 
 export const listaDeQuestoes: Question[] = [
-  // --- OSTEOLOGIA (Membros Superiores) ---
+  // --- osteologia (Membros Superiores) ---
   {
     pergunta: "Qual é a característica correta em relação à extremidade, concavidade e convexidade da clavícula?",
     opcoes: [
@@ -11,7 +11,8 @@ export const listaDeQuestoes: Question[] = [
       "A extremidade esternal é sempre medial, e a face superior é rugosa."
     ],
     resposta_correta: 2,
-    sistema: "Osteologia",
+    regiao: "superior",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "A clavícula é um osso sigmoide. A concavidade é posterior e lateral."
@@ -25,7 +26,8 @@ export const listaDeQuestoes: Question[] = [
       "Incisura clavicular, Processo coracoide e Incisura jugular."
     ],
     resposta_correta: 2,
-    sistema: "Osteologia",
+    regiao: "superior",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O osso esterno é dividido em manúbrio, corpo e apêndice xifoide."
@@ -39,7 +41,8 @@ export const listaDeQuestoes: Question[] = [
       "Margem/borda medial."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "superior",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "A escápula conecta-se com a cabeça do úmero mediante a sua cavidade glenoide."
@@ -53,7 +56,8 @@ export const listaDeQuestoes: Question[] = [
       "Fossa supraespinhal e Fossa infraespinhal."
     ],
     resposta_correta: 3,
-    sistema: "Osteologia",
+    regiao: "superior",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "A espinha divide a face posterior em fossa supraespinhal e infraespinhal."
@@ -67,7 +71,8 @@ export const listaDeQuestoes: Question[] = [
       "Tuberosidade deltóidea."
     ],
     resposta_correta: 2,
-    sistema: "Osteologia",
+    regiao: "superior",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "A articulação glenoumeral ocorre entre a cabeça do úmero e a cavidade glenoidal."
@@ -81,7 +86,8 @@ export const listaDeQuestoes: Question[] = [
       "Fossa coronóide do úmero."
     ],
     resposta_correta: 2,
-    sistema: "Osteologia",
+    regiao: "superior",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "Entre os dois tubérculos há o sulco intertubercular, por onde passa o tendão do bíceps."
@@ -95,7 +101,8 @@ export const listaDeQuestoes: Question[] = [
       "Fossa coronóide e Fossa radial."
     ],
     resposta_correta: 2,
-    sistema: "Osteologia",
+    regiao: "superior",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O côndilo é a junção da tróclea e do capítulo."
@@ -109,7 +116,8 @@ export const listaDeQuestoes: Question[] = [
       "Sulco intertubercular."
     ],
     resposta_correta: 2,
-    sistema: "Osteologia",
+    regiao: "superior",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "A fossa do olécrano recebe o olécrano da ulna na extensão do cotovelo."
@@ -123,7 +131,8 @@ export const listaDeQuestoes: Question[] = [
       "Incisura radial da ulna."
     ],
     resposta_correta: 2,
-    sistema: "Osteologia",
+    regiao: "superior",
+    sistema: "osteologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "A ulna possui o olécrano (superior) e o processo coronoide (inferior)."
@@ -137,13 +146,14 @@ export const listaDeQuestoes: Question[] = [
       "Tubérculo do rádio."
     ],
     resposta_correta: 2,
-    sistema: "Osteologia",
+    regiao: "superior",
+    sistema: "osteologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "Distalmente, o rádio e a ulna se tocam na incisura ulnar do rádio."
   },
 
-  // --- MIOLOGIA (Membros Superiores) ---
+  // --- miologia (Membros Superiores) ---
   {
     pergunta: "Qual é o local de fixação distal do Músculo Peitoral Maior?",
     opcoes: [
@@ -153,7 +163,8 @@ export const listaDeQuestoes: Question[] = [
       "Tuberosidade deltóidea do úmero."
     ],
     resposta_correta: 2,
-    sistema: "Miologia",
+    regiao: "superior",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "A fixação distal está no lábio externo do sulco intertubercular do úmero."
@@ -167,7 +178,8 @@ export const listaDeQuestoes: Question[] = [
       "Nervo axilar."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "superior",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O nervo torácico longo inerva o serrátil; sua lesão causa escápula alada."
@@ -181,7 +193,8 @@ export const listaDeQuestoes: Question[] = [
       "Porção oblíqua."
     ],
     resposta_correta: 2,
-    sistema: "Miologia",
+    regiao: "superior",
+    sistema: "miologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "As fibras superiores elevam a escápula; as médias fazem adução e as inferiores depressão."
@@ -195,7 +208,8 @@ export const listaDeQuestoes: Question[] = [
       "Tubérculo maior do úmero."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "superior",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "A inserção distal ocorre no assoalho do sulco intertubercular do úmero."
@@ -209,13 +223,14 @@ export const listaDeQuestoes: Question[] = [
       "Músculo Redondo Maior."
     ],
     resposta_correta: 2,
-    sistema: "Miologia",
+    regiao: "superior",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O supraespinhal é responsável por iniciar os primeiros 20 graus de abdução."
   },
 
-  // --- ARTROLOGIA (Membros Superiores) ---
+  // --- artrologia (Membros Superiores) ---
   {
     pergunta: "Qual estrutura melhora o encaixe e amortece choques na articulação esternoclavicular?",
     opcoes: [
@@ -225,7 +240,8 @@ export const listaDeQuestoes: Question[] = [
       "Cápsula articular."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "superior",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O disco fibrocartilaginoso absorve impactos entre a clavícula e o esterno."
@@ -239,12 +255,13 @@ export const listaDeQuestoes: Question[] = [
       "Sinovial trocóide, uniaxial."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "superior",
+    sistema: "artrologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "É esferoide e triaxial, permitindo movimentos em todos os planos."
   },
-
+  /*
   // --- INERVAÇÃO (Membros Superiores) ---
   {
     pergunta: "Quais raízes formam o Tronco Superior do Plexo Braquial?",
@@ -288,7 +305,9 @@ export const listaDeQuestoes: Question[] = [
     xp_recompensa: 15,
     explicacao: "O nervo axilar (C5-C6) é o responsável por esses músculos do ombro."
   },
-  // --- MIOLOGIA E ARTROLOGIA (Continuação) ---
+  */
+
+  // --- miologia E artrologia (Continuação) ---
   {
     pergunta: "O Músculo Braquiorradial tem sua fixação proximal na crista supracondilar lateral do úmero e realiza qual movimento principal?",
     opcoes: [
@@ -298,7 +317,8 @@ export const listaDeQuestoes: Question[] = [
       "Extensão do polegar."
     ],
     resposta_correta: 2,
-    sistema: "Miologia",
+    regiao: "superior",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O braquiorradial é o único do antebraço que não atua no punho, focando apenas na flexão do cotovelo."
@@ -312,7 +332,8 @@ export const listaDeQuestoes: Question[] = [
       "Flexão do punho."
     ],
     resposta_correta: 2,
-    sistema: "Miologia",
+    regiao: "superior",
+    sistema: "miologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "Como o nome indica, sua função principal é a supinação do antebraço."
@@ -326,7 +347,8 @@ export const listaDeQuestoes: Question[] = [
       "Nervo axilar."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "superior",
+    sistema: "miologia",
     dificuldade: 3,
     xp_recompensa: 20,
     explicacao: "A porção profunda é inervada pelo ulnar, enquanto a superficial pelo mediano."
@@ -340,7 +362,8 @@ export const listaDeQuestoes: Question[] = [
       "Abdução dos dedos."
     ],
     resposta_correta: 3,
-    sistema: "Miologia",
+    regiao: "superior",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "Os interósseos dorsais abduzem (afastam) os dedos em relação ao 3º dedo."
@@ -354,7 +377,8 @@ export const listaDeQuestoes: Question[] = [
       "Cápsula articular."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "superior",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O disco fibrocartilaginoso amortece choques entre a clavícula e o manúbrio do esterno."
@@ -368,7 +392,8 @@ export const listaDeQuestoes: Question[] = [
       "Ligamento esternoclavicular posterior."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "superior",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O ligamento interclavicular conecta as duas clavículas, prevenindo o tracionamento lateral."
@@ -382,7 +407,8 @@ export const listaDeQuestoes: Question[] = [
       "Plana."
     ],
     resposta_correta: 3,
-    sistema: "Artrologia",
+    regiao: "superior",
+    sistema: "artrologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "É uma articulação plana que permite movimentos de deslizamento entre o acrômio e a clavícula."
@@ -396,7 +422,8 @@ export const listaDeQuestoes: Question[] = [
       "Ligamento glenoumeral superior e médio."
     ],
     resposta_correta: 1,
-    sistema: "Artrologia",
+    regiao: "superior",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "A união dos ligamentos conóide e trapezoide forma o complexo coracoclavicular."
@@ -410,12 +437,13 @@ export const listaDeQuestoes: Question[] = [
       "Sinovial trocóide, uniaxial."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "superior",
+    sistema: "artrologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "É uma articulação esferoide multi-axial (triaxial), permitindo movimentos em todos os planos."
   },
-  // --- ARTROLOGIA (Membros Superiores - Continuação) ---
+  // --- artrologia (Membros Superiores - Continuação) ---
   {
     pergunta: "Qual estrutura é a principal responsável pelo reforço posterior da cápsula articular glenoumeral?",
     opcoes: [
@@ -425,7 +453,8 @@ export const listaDeQuestoes: Question[] = [
       "Ligamento transverso do úmero."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "superior",
+    sistema: "artrologia",
     dificuldade: 3,
     xp_recompensa: 20,
     explicacao: "Posteriormente, a articulação conta apenas com a banda posterior do ligamento glenoumeral inferior como reforço ligamentar."
@@ -439,7 +468,8 @@ export const listaDeQuestoes: Question[] = [
       "Luxação anterior."
     ],
     resposta_correta: 3,
-    sistema: "Artrologia",
+    regiao: "superior",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "A luxação anterior é a mais frequente pois a região posterior é mais protegida pelos músculos do manguito rotador."
@@ -453,7 +483,8 @@ export const listaDeQuestoes: Question[] = [
       "Umerocárpica, umeroradial e radioulnar distal."
     ],
     resposta_correta: 1,
-    sistema: "Artrologia",
+    regiao: "superior",
+    sistema: "artrologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O complexo envolve as articulações entre úmero-rádio, úmero-ulna e a rádio-ulna proximal."
@@ -467,7 +498,8 @@ export const listaDeQuestoes: Question[] = [
       "Plana."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "superior",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "Articulações em gínglimo (dobradiça) são monoaxiais e permitem apenas flexão e extensão."
@@ -481,7 +513,8 @@ export const listaDeQuestoes: Question[] = [
       "Limitar a flexão e extensão do antebraço."
     ],
     resposta_correta: 1,
-    sistema: "Artrologia",
+    regiao: "superior",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O ligamento anular envolve a cabeça do rádio, mantendo-a unida à incisura radial da ulna."
@@ -495,7 +528,8 @@ export const listaDeQuestoes: Question[] = [
       "Pronação e supinação."
     ],
     resposta_correta: 3,
-    sistema: "Artrologia",
+    regiao: "superior",
+    sistema: "artrologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "Articulações trocóides permitem o movimento de rotação sobre o próprio eixo, resultando em pronação/supinação."
@@ -509,7 +543,8 @@ export const listaDeQuestoes: Question[] = [
       "Cartilaginosa; Disco fibrocartilaginoso."
     ],
     resposta_correta: 1,
-    sistema: "Artrologia",
+    regiao: "superior",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "A membrana interóssea une as diáfises do rádio e da ulna em uma articulação fibrosa tipo sindesmose."
@@ -523,7 +558,8 @@ export const listaDeQuestoes: Question[] = [
       "Membrana interóssea."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "superior",
+    sistema: "artrologia",
     dificuldade: 3,
     xp_recompensa: 20,
     explicacao: "O disco articular (fibrocartilagem triangular) atua como um amortecedor e limitador físico."
@@ -537,7 +573,8 @@ export const listaDeQuestoes: Question[] = [
       "Escafóide, hamato e capitato."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "superior",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O rádio articula-se com a fileira proximal do carpo, exceto o pisiforme."
@@ -551,7 +588,8 @@ export const listaDeQuestoes: Question[] = [
       "Sinovial gínglimo."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "superior",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "A articulação em sela do polegar permite grande mobilidade, incluindo a oposição."
@@ -565,11 +603,13 @@ export const listaDeQuestoes: Question[] = [
       "Pronação e supinação."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "superior",
+    sistema: "artrologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "Sendo uniaxiais tipo dobradiça, permitem apenas dobrar e esticar os dedos."
   },
+  /*
   // --- INERVAÇÃO E VASCULARIZAÇÃO (Membros Superiores) ---
   {
     pergunta: "Quais raízes formam o Tronco Superior do Plexo Braquial?",
@@ -725,8 +765,8 @@ export const listaDeQuestoes: Question[] = [
     xp_recompensa: 15,
     explicacao: "A união da subclávia (membro superior) com a jugular interna (cabeça) forma a braquiocefálica."
   },
-
-  // --- OSTEOLOGIA (Membros Inferiores) ---
+  */
+  // --- osteologia (Membros Inferiores) ---
   {
     pergunta: "O osso do quadril é formado pela fusão de quais ossos?",
     opcoes: [
@@ -736,7 +776,8 @@ export const listaDeQuestoes: Question[] = [
       "Ísquio, púbis e patela."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O osso do quadril é formado pela junção do ílio, ísquio e púbis."
@@ -750,7 +791,8 @@ export const listaDeQuestoes: Question[] = [
       "Unidos por ligamentos rígidos sem cartilagem."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "Ao nascer, os ossos são unidos pela cartilagem trirradiada no acetábulo, que se ossifica depois."
@@ -764,7 +806,8 @@ export const listaDeQuestoes: Question[] = [
       "Linha glútea inferior."
     ],
     resposta_correta: 2,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "A EIAS é um marco anatômico palpável essencial para medidas e avaliações clínicas."
@@ -778,7 +821,8 @@ export const listaDeQuestoes: Question[] = [
       "Músculo psoas maior."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O músculo ilíaco tem origem na fossa ilíaca e auxilia na flexão do quadril."
@@ -792,7 +836,8 @@ export const listaDeQuestoes: Question[] = [
       "Incisura isquiática menor."
     ],
     resposta_correta: 2,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O túber isquiático é a proeminência do ísquio que suporta o peso corporal ao sentar."
@@ -806,7 +851,8 @@ export const listaDeQuestoes: Question[] = [
       "Alojar o músculo pectíneo."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "A face sinfisial articula-se com o púbis contralateral através de uma superfície plana."
@@ -820,7 +866,8 @@ export const listaDeQuestoes: Question[] = [
       "Veia safena."
     ],
     resposta_correta: 2,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O nervo obturatório atravessa o forame, que é quase todo fechado pela membrana obturatória."
@@ -834,7 +881,8 @@ export const listaDeQuestoes: Question[] = [
       "Face auricular."
     ],
     resposta_correta: 2,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O acetábulo é a cavidade lateral que recebe a cabeça do fêmur."
@@ -848,7 +896,8 @@ export const listaDeQuestoes: Question[] = [
       "Úmero."
     ],
     resposta_correta: 2,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O fêmur é o osso mais longo e atua como uma alavanca essencial para a marcha."
@@ -862,7 +911,8 @@ export const listaDeQuestoes: Question[] = [
       "Colo do fêmur."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "A fóvea permite a fixação do ligamento da cabeça do fêmur e a passagem de artéria."
@@ -876,7 +926,8 @@ export const listaDeQuestoes: Question[] = [
       "Medial-proximal."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "Localizado póstero-lateralmente no fêmur proximal, é local de inserção de glúteos."
@@ -890,7 +941,8 @@ export const listaDeQuestoes: Question[] = [
       "Trocânter maior e menor."
     ],
     resposta_correta: 0,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "A linha áspera resulta do encontro dos lábios medial e lateral do corpo do fêmur."
@@ -904,7 +956,8 @@ export const listaDeQuestoes: Question[] = [
       "Linha intertrocantérica."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O tubérculo do adutor permite a fixação do músculo adutor magno."
@@ -918,7 +971,8 @@ export const listaDeQuestoes: Question[] = [
       "Osso irregular."
     ],
     resposta_correta: 2,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "A patela é o maior osso sesamoide, desenvolvendo-se dentro do tendão do quadríceps."
@@ -932,7 +986,8 @@ export const listaDeQuestoes: Question[] = [
       "Proteção de vasos sanguíneos da coxa."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "A tíbia transmite o peso do fêmur para o tálus na articulação do tornozelo."
@@ -946,7 +1001,8 @@ export const listaDeQuestoes: Question[] = [
       "Tuberosidade da tíbia e côndilos."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 3,
     xp_recompensa: 20,
     explicacao: "Envolve a parte superior dos côndilos, incluindo as áreas intercondilares."
@@ -960,7 +1016,8 @@ export const listaDeQuestoes: Question[] = [
       "Sempre superior."
     ],
     resposta_correta: 2,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "Essa estrutura anterior é marco para identificação e fixação do ligamento patelar."
@@ -974,7 +1031,8 @@ export const listaDeQuestoes: Question[] = [
       "Localiza-se na porção medial da perna."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "A fíbula é lateral e articula-se com a tíbia, não participando do joelho."
@@ -988,7 +1046,8 @@ export const listaDeQuestoes: Question[] = [
       "5 e 5."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O tarso possui 7 ossos (como tálus e calcâneo) e o metatarso possui 5."
@@ -1002,13 +1061,14 @@ export const listaDeQuestoes: Question[] = [
       "Tuber, ramo e face."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "inferior",
+    sistema: "osteologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "Toda falange divide-se anatomicamente em base, corpo e cabeça."
   },
 
-  // --- ARTROLOGIA (Membros Inferiores) ---
+  // --- artrologia (Membros Inferiores) ---
   {
     pergunta: "Qual é a classificação da articulação sacroilíaca?",
     opcoes: [
@@ -1018,7 +1078,8 @@ export const listaDeQuestoes: Question[] = [
       "Fibrosa sindesmose."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "inferior",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "É considerada sinovial plana, permitindo pequenos movimentos de deslizamento para absorção de carga."
@@ -1032,7 +1093,8 @@ export const listaDeQuestoes: Question[] = [
       "Deslizamento lateral sem alteração dos estreitos pélvicos."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "inferior",
+    sistema: "artrologia",
     dificuldade: 3,
     xp_recompensa: 20,
     explicacao: "Na nutação, a base do sacro move-se anteriormente, aumentando a abertura inferior para o parto."
@@ -1046,7 +1108,8 @@ export const listaDeQuestoes: Question[] = [
       "Ligamento sacroespinhal."
     ],
     resposta_correta: 3,
-    sistema: "Artrologia",
+    regiao: "inferior",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O ligamento sacroespinhal divide o espaço isquiático em forame maior e menor."
@@ -1060,7 +1123,8 @@ export const listaDeQuestoes: Question[] = [
       "Sinovial gínglimo."
     ],
     resposta_correta: 1,
-    sistema: "Artrologia",
+    regiao: "inferior",
+    sistema: "artrologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "Possui superfícies cobertas por cartilagem hialina e um disco de fibrocartilagem entre elas."
@@ -1074,7 +1138,8 @@ export const listaDeQuestoes: Question[] = [
       "Menisco medial."
     ],
     resposta_correta: 1,
-    sistema: "Artrologia",
+    regiao: "inferior",
+    sistema: "artrologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O disco interpúbico é a fibrocartilagem que fica entre as superfícies articulares do púbis."
@@ -1088,7 +1153,8 @@ export const listaDeQuestoes: Question[] = [
       "Apenas rotação medial e lateral."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "inferior",
+    sistema: "artrologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "Sendo multiaxial (esferoide), permite movimentação livre em todos os eixos."
@@ -1102,7 +1168,8 @@ export const listaDeQuestoes: Question[] = [
       "Ligamento da cabeça do fêmur."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "inferior",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O ligamento iliofemoral (Y de Bigelow) é o mais forte e limita a hiperextensão."
@@ -1116,7 +1183,8 @@ export const listaDeQuestoes: Question[] = [
       "O ligamento transverso do quadril."
     ],
     resposta_correta: 1,
-    sistema: "Artrologia",
+    regiao: "inferior",
+    sistema: "artrologia",
     dificuldade: 3,
     xp_recompensa: 20,
     explicacao: "Um ramo da artéria obturatória passa pelo ligamento para nutrir a cabeça do fêmur."
@@ -1130,7 +1198,8 @@ export const listaDeQuestoes: Question[] = [
       "Sinovial esferoide."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "inferior",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "Permite o deslizamento da patela sobre o fêmur durante a flexão e extensão do joelho."
@@ -1144,7 +1213,8 @@ export const listaDeQuestoes: Question[] = [
       "Ligamento cruzado posterior."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "inferior",
+    sistema: "artrologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O ligamento patelar é a continuação do tendão do quadríceps."
@@ -1158,7 +1228,8 @@ export const listaDeQuestoes: Question[] = [
       "Ligar o fêmur à fíbula."
     ],
     resposta_correta: 1,
-    sistema: "Artrologia",
+    regiao: "inferior",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "Os meniscos amortecem impactos e melhoram a congruência entre fêmur e tíbia."
@@ -1172,7 +1243,8 @@ export const listaDeQuestoes: Question[] = [
       "Ligamento poplíteo oblíquo."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "inferior",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O LCA evita que a tíbia deslize anteriormente em relação ao fêmur."
@@ -1186,7 +1258,8 @@ export const listaDeQuestoes: Question[] = [
       "Sinovial condilar."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "inferior",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "É uma união fibrosa através da membrana interóssea entre tíbia e fíbula."
@@ -1200,7 +1273,8 @@ export const listaDeQuestoes: Question[] = [
       "Abdução e adução."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "inferior",
+    sistema: "artrologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "Sendo do tipo gínglimo, foca no movimento de dobradiça (plantiflexão/dorsiflexão)."
@@ -1214,7 +1288,8 @@ export const listaDeQuestoes: Question[] = [
       "Articulação interfalangeana."
     ],
     resposta_correta: 1,
-    sistema: "Artrologia",
+    regiao: "inferior",
+    sistema: "artrologia",
     dificuldade: 3,
     xp_recompensa: 20,
     explicacao: "Sendo esferoide, permite movimentos complexos como inversão e eversão."
@@ -1228,13 +1303,14 @@ export const listaDeQuestoes: Question[] = [
       "Sinovial plana."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "inferior",
+    sistema: "artrologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "São articulações em dobradiça uniaxiais para flexão e extensão dos dedos."
   },
 
-  // --- MIOLOGIA (Membros Inferiores) ---
+  // --- miologia (Membros Inferiores) ---
   {
     pergunta: "Qual é o principal músculo flexor do quadril mencionado no documento?",
     opcoes: [
@@ -1244,7 +1320,8 @@ export const listaDeQuestoes: Question[] = [
       "Músculo reto femoral."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O iliopsoas (ilíaco + psoas maior) é o principal motor da flexão do quadril."
@@ -1258,7 +1335,8 @@ export const listaDeQuestoes: Question[] = [
       "Quadrado femoral."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 3,
     xp_recompensa: 20,
     explicacao: "A fraqueza do glúteo médio impede o nivelamento da pelve durante a marcha, causando a queda do lado oposto."
@@ -1272,7 +1350,8 @@ export const listaDeQuestoes: Question[] = [
       "Músculo psoas maior."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O piriforme pode comprimir o nervo isquiático em casos de inflamação ou hipertrofia (Síndrome do Piriforme)."
@@ -1286,7 +1365,8 @@ export const listaDeQuestoes: Question[] = [
       "Abdução e rotação medial; Extensão e rotação medial."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 3,
     xp_recompensa: 20,
     explicacao: "Conhecido como 'músculo do costureiro', ele flete e roda lateralmente o quadril, e flete e roda medialmente o joelho."
@@ -1300,7 +1380,8 @@ export const listaDeQuestoes: Question[] = [
       "Reto femoral."
     ],
     resposta_correta: 3,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O reto femoral é a única cabeça biarticulada do quadríceps, originando-se no quadril."
@@ -1314,7 +1395,8 @@ export const listaDeQuestoes: Question[] = [
       "Epicôndilo lateral do fêmur."
     ],
     resposta_correta: 2,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "Todas as cabeças convergem para a base (borda superior) da patela através do tendão do quadríceps."
@@ -1328,7 +1410,8 @@ export const listaDeQuestoes: Question[] = [
       "Realizar apenas a rotação medial."
     ],
     resposta_correta: 2,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "Os músculos mediais têm como função primordial a aproximação da coxa da linha mediana (adução)."
@@ -1342,7 +1425,8 @@ export const listaDeQuestoes: Question[] = [
       "Glúteo médio, mínimo e piriforme."
     ],
     resposta_correta: 0,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "Os isquiotibiais compreendem o bíceps femoral e os músculos semitendíneo e semimembranáceo."
@@ -1356,7 +1440,8 @@ export const listaDeQuestoes: Question[] = [
       "Extensor longo dos dedos."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O tibial anterior eleva o dorso do pé e volta a planta 'para dentro'."
@@ -1370,7 +1455,8 @@ export const listaDeQuestoes: Question[] = [
       "Flexão das falanges."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "Localizados lateralmente, esses músculos voltam a planta do pé 'para fora' (eversão)."
@@ -1384,7 +1470,8 @@ export const listaDeQuestoes: Question[] = [
       "Bíceps femoral, semitendíneo e sóleo."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O tríceps sural engloba as duas cabeças do gastrocnêmio e o músculo sóleo."
@@ -1398,7 +1485,8 @@ export const listaDeQuestoes: Question[] = [
       "Tendão fibular."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "As três cabeças do tríceps sural inserem-se no osso calcâneo via tendão de Aquiles."
@@ -1412,7 +1500,8 @@ export const listaDeQuestoes: Question[] = [
       "Rotação lateral da tíbia."
     ],
     resposta_correta: 2,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O poplíteo 'destrava' o joelho estendido para permitir o início da flexão."
@@ -1426,7 +1515,8 @@ export const listaDeQuestoes: Question[] = [
       "Fibular terceiro."
     ],
     resposta_correta: 2,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O flexor longo do hálux realiza a flexão primária do dedão do pé."
@@ -1440,7 +1530,8 @@ export const listaDeQuestoes: Question[] = [
       "Lateralmente ao calcâneo."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "Diferente da maioria, este músculo situa-se no dorso do pé junto ao extensor curto do hálux."
@@ -1454,7 +1545,8 @@ export const listaDeQuestoes: Question[] = [
       "Oposição do hálux."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "Os interósseos plantares aproximam os dedos do eixo mediano do pé (adução)."
@@ -1468,7 +1560,8 @@ export const listaDeQuestoes: Question[] = [
       "Nervo glúteo superior."
     ],
     resposta_correta: 2,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O nervo femoral é o motor principal para o compartimento anterior da coxa."
@@ -1482,7 +1575,8 @@ export const listaDeQuestoes: Question[] = [
       "Adução pura."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O glúteo máximo é o extensor mais potente do quadril."
@@ -1496,7 +1590,8 @@ export const listaDeQuestoes: Question[] = [
       "Adutor longo."
     ],
     resposta_correta: 0,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "A pata de ganso (pes anserinus) é formada pelas inserções do grácil, semitendíneo e sartório."
@@ -1510,11 +1605,13 @@ export const listaDeQuestoes: Question[] = [
       "Apenas do 5º dedo."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "inferior",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "Eles estendem as articulações interfalângicas, mantendo as falanges médias e distais esticadas."
   },
+  /*
   // --- INERVAÇÃO (Membros Inferiores) ---
   {
     pergunta: "Quais são as duas porções principais que formam os plexos dos membros inferiores?",
@@ -1782,6 +1879,8 @@ export const listaDeQuestoes: Question[] = [
     xp_recompensa: 15,
     explicacao: "Resulta da união de ramos cutâneos vindos do tibial e do fibular comum no meio da perna."
   },
+  */
+  /*
 
   // --- VASCULARIZAÇÃO (Membros Inferiores) ---
   {
@@ -1938,8 +2037,8 @@ export const listaDeQuestoes: Question[] = [
     xp_recompensa: 10,
     explicacao: "A junção das ilíacas comuns forma a veia cava inferior, que leva o sangue ao átrio direito."
   },
-
-  // --- OSTEOLOGIA (Tronco) ---
+  */
+  // --- osteologia (Tronco) ---
   {
     pergunta: "Quais estruturas compõem o esqueleto do tórax?",
     opcoes: [
@@ -1949,7 +2048,8 @@ export const listaDeQuestoes: Question[] = [
       "Esterno e cintura pélvica."
     ],
     resposta_correta: 0,
-    sistema: "Osteologia",
+    regiao: "tronco",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O esqueleto torácico é formado pela coluna vertebral, pelo esterno e pelos 12 pares de costelas."
@@ -1963,7 +2063,8 @@ export const listaDeQuestoes: Question[] = [
       "12 ossos."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "tronco",
+    sistema: "osteologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "A coluna possui 26 vértebras (7 cervicais, 12 torácicas, 5 lombares, o sacro e o cóccix)."
@@ -1977,7 +2078,8 @@ export const listaDeQuestoes: Question[] = [
       "Canal vertebral."
     ],
     resposta_correta: 2,
-    sistema: "Osteologia",
+    regiao: "tronco",
+    sistema: "osteologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O orifício em uma única vértebra é o forame vertebral; o conjunto deles forma o canal vertebral."
@@ -1991,7 +2093,8 @@ export const listaDeQuestoes: Question[] = [
       "Unco."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "tronco",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "C1 chama-se Atlas e C2 chama-se Áxis."
@@ -2005,7 +2108,8 @@ export const listaDeQuestoes: Question[] = [
       "Processo espinhoso longo e não bífido."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "tronco",
+    sistema: "osteologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O processo odontoide (dente) é a característica marcante de C2 para a rotação da cabeça."
@@ -2019,7 +2123,8 @@ export const listaDeQuestoes: Question[] = [
       "Canal vertebral."
     ],
     resposta_correta: 2,
-    sistema: "Osteologia",
+    regiao: "tronco",
+    sistema: "osteologia",
     dificuldade: 3,
     xp_recompensa: 20,
     explicacao: "As artérias vertebrais passam pelos forames localizados nos processos transversos das vértebras cervicais."
@@ -2033,7 +2138,8 @@ export const listaDeQuestoes: Question[] = [
       "C7."
     ],
     resposta_correta: 3,
-    sistema: "Osteologia",
+    regiao: "tronco",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "C7 é a chamada 'vértebra proeminente' por seu processo espinhoso longo e palpável."
@@ -2047,7 +2153,8 @@ export const listaDeQuestoes: Question[] = [
       "12 vértebras."
     ],
     resposta_correta: 0,
-    sistema: "Osteologia",
+    regiao: "tronco",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O sacro resulta da fusão de cinco vértebras sacrais, processo concluído por volta dos 30 anos."
@@ -2061,7 +2168,8 @@ export const listaDeQuestoes: Question[] = [
       "Secundária."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "tronco",
+    sistema: "osteologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "A cifose torácica é primária pois mantém a configuração côncava da coluna embrionária."
@@ -2075,7 +2183,8 @@ export const listaDeQuestoes: Question[] = [
       "Torácica e Cervical."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "tronco",
+    sistema: "osteologia",
     dificuldade: 3,
     xp_recompensa: 20,
     explicacao: "As vértebras cervicais e lombares possuem forames maiores e triangulares para acomodar os plexos nervosos."
@@ -2089,7 +2198,8 @@ export const listaDeQuestoes: Question[] = [
       "Unir as costelas ao esterno."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "tronco",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "Os discos intervertebrais funcionam como amortecedores de impacto entre os corpos das vértebras."
@@ -2103,7 +2213,8 @@ export const listaDeQuestoes: Question[] = [
       "Ligamento amarelo."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "tronco",
+    sistema: "osteologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O núcleo pulposo é o centro amolecido, circundado pelo anel fibroso."
@@ -2117,7 +2228,8 @@ export const listaDeQuestoes: Question[] = [
       "Base, Ápice e Face."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "tronco",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O esterno divide-se em manúbrio (superior), corpo (médio) e processo xifoide (inferior)."
@@ -2131,7 +2243,8 @@ export const listaDeQuestoes: Question[] = [
       "2 pares."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "tronco",
+    sistema: "osteologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "As 7 primeiras costelas são 'verdadeiras' pois se articulam diretamente ao esterno."
@@ -2145,13 +2258,14 @@ export const listaDeQuestoes: Question[] = [
       "São feitas apenas de cartilagem."
     ],
     resposta_correta: 1,
-    sistema: "Osteologia",
+    regiao: "tronco",
+    sistema: "osteologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "As costelas flutuantes (pares XI e XII) não possuem conexão anterior com o esterno."
   },
 
-  // --- ARTROLOGIA (Tronco) ---
+  // --- artrologia (Tronco) ---
   {
     pergunta: "Como são classificadas as articulações intervertebrais entre os corpos vertebrais?",
     opcoes: [
@@ -2161,7 +2275,8 @@ export const listaDeQuestoes: Question[] = [
       "Sinoviais condilares."
     ],
     resposta_correta: 1,
-    sistema: "Artrologia",
+    regiao: "tronco",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "São sínfises compostas por discos fibrocartilaginosos, sem cavidade sinovial."
@@ -2175,7 +2290,8 @@ export const listaDeQuestoes: Question[] = [
       "Entre as lâminas e o pedículo."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "tronco",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "Também chamadas interapofisárias, ocorrem entre as facetas dos processos articulares."
@@ -2189,7 +2305,8 @@ export const listaDeQuestoes: Question[] = [
       "Sinovial gínglimo."
     ],
     resposta_correta: 0,
-    sistema: "Artrologia",
+    regiao: "tronco",
+    sistema: "artrologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "Sendo sinoviais planas, permitem pequenos movimentos de deslizamento entre as vértebras."
@@ -2203,7 +2320,8 @@ export const listaDeQuestoes: Question[] = [
       "Sobre os corpos vertebrais."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "tronco",
+    sistema: "artrologia",
     dificuldade: 3,
     xp_recompensa: 20,
     explicacao: "O ligamento amarelo une as lâminas das vértebras e atua no limite posterior do canal vertebral."
@@ -2217,7 +2335,8 @@ export const listaDeQuestoes: Question[] = [
       "Ligamento longitudinal anterior."
     ],
     resposta_correta: 1,
-    sistema: "Artrologia",
+    regiao: "tronco",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O supraespinhoso forma uma faixa fibrosa sobre as pontas dos processos espinhosos."
@@ -2231,7 +2350,8 @@ export const listaDeQuestoes: Question[] = [
       "L5 e sacro."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "tronco",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "Esta articulação permite o movimento de flexão/extensão da cabeça (movimento de sim)."
@@ -2245,7 +2365,8 @@ export const listaDeQuestoes: Question[] = [
       "Deslizamento inferior."
     ],
     resposta_correta: 2,
-    sistema: "Artrologia",
+    regiao: "tronco",
+    sistema: "artrologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "É uma articulação do tipo pivô que permite girar a cabeça lateralmente."
@@ -2259,7 +2380,8 @@ export const listaDeQuestoes: Question[] = [
       "Ligamento iliolombar."
     ],
     resposta_correta: 1,
-    sistema: "Artrologia",
+    regiao: "tronco",
+    sistema: "artrologia",
     dificuldade: 3,
     xp_recompensa: 20,
     explicacao: "O ligamento transverso do atlas é crucial para estabilizar o dente do áxis contra o arco anterior do atlas."
@@ -2273,7 +2395,8 @@ export const listaDeQuestoes: Question[] = [
       "Ligamento intra-articular."
     ],
     resposta_correta: 1,
-    sistema: "Artrologia",
+    regiao: "tronco",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O iliolombar conecta o processo transverso de L5 ao osso ilíaco."
@@ -2287,7 +2410,8 @@ export const listaDeQuestoes: Question[] = [
       "Vértebras cervicais apenas."
     ],
     resposta_correta: 1,
-    sistema: "Artrologia",
+    regiao: "tronco",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "A cabeça da costela articula-se com as facetas presentes nos corpos das vértebras torácicas."
@@ -2301,7 +2425,8 @@ export const listaDeQuestoes: Question[] = [
       "Circundação das costelas."
     ],
     resposta_correta: 1,
-    sistema: "Artrologia",
+    regiao: "tronco",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "Sendo sinoviais planas, permitem o deslizamento necessário para a expansão da caixa torácica."
@@ -2315,13 +2440,14 @@ export const listaDeQuestoes: Question[] = [
       "Ligamento cruciforme e membrana tectória."
     ],
     resposta_correta: 1,
-    sistema: "Artrologia",
+    regiao: "tronco",
+    sistema: "artrologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O LLA, o LLP e o disco garantem a estabilidade e limitam a flexão/extensão da coluna."
   },
 
-  // --- MIOLOGIA (Tronco e Pescoço) ---
+  // --- miologia (Tronco e Pescoço) ---
   {
     pergunta: "Qual músculo realiza a flexão lateral e rotação lateral em contração unilateral e a extensão em contração bilateral?",
     opcoes: [
@@ -2331,7 +2457,8 @@ export const listaDeQuestoes: Question[] = [
       "Suboccipital."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "tronco",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O ECM flete a cabeça lateralmente para o lado oposto quando age sozinho e estende a cabeça quando ambos agem simultaneamente."
@@ -2345,7 +2472,8 @@ export const listaDeQuestoes: Question[] = [
       "Serrátil anterior e escalenos."
     ],
     resposta_correta: 0,
-    sistema: "Miologia",
+    regiao: "tronco",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "Embora não seja sua função primária, os músculos peitorais auxiliam na inspiração forçada."
@@ -2359,7 +2487,8 @@ export const listaDeQuestoes: Question[] = [
       "Rotação medial do braço."
     ],
     resposta_correta: 2,
-    sistema: "Miologia",
+    regiao: "tronco",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O serrátil anterior eleva as costelas e fixa a escápula à parede torácica."
@@ -2373,7 +2502,8 @@ export const listaDeQuestoes: Question[] = [
       "Tracionam superiormente as costelas, sendo inspiratórios."
     ],
     resposta_correta: 3,
-    sistema: "Miologia",
+    regiao: "tronco",
+    sistema: "miologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "Eles elevam as costelas no movimento de 'alça de balde', aumentando o diâmetro torácico para a inspiração."
@@ -2387,7 +2517,8 @@ export const listaDeQuestoes: Question[] = [
       "Serrátil anterior."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "tronco",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "Ao aproximar as costelas para baixo, reduzem o diâmetro torácico para a saída de ar."
@@ -2401,7 +2532,8 @@ export const listaDeQuestoes: Question[] = [
       "Escaleno."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "tronco",
+    sistema: "miologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O diafragma aumenta o volume torácico ao se contrair, sendo motor da respiração."
@@ -2415,7 +2547,8 @@ export const listaDeQuestoes: Question[] = [
       "Ducto torácico."
     ],
     resposta_correta: 2,
-    sistema: "Miologia",
+    regiao: "tronco",
+    sistema: "miologia",
     dificuldade: 3,
     xp_recompensa: 20,
     explicacao: "Pelo hiato esofágico passam tanto o esôfago quanto o nervo vago."
@@ -2429,7 +2562,8 @@ export const listaDeQuestoes: Question[] = [
       "Esôfago."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "tronco",
+    sistema: "miologia",
     dificuldade: 3,
     xp_recompensa: 20,
     explicacao: "O ducto torácico, maior vaso linfático, perpassa o diafragma junto com a aorta."
@@ -2443,7 +2577,8 @@ export const listaDeQuestoes: Question[] = [
       "Piramidal."
     ],
     resposta_correta: 2,
-    sistema: "Miologia",
+    regiao: "tronco",
+    sistema: "miologia",
     dificuldade: 1,
     xp_recompensa: 10,
     explicacao: "O reto abdominal possui faixas fibrosas que dividem o ventre muscular."
@@ -2457,7 +2592,8 @@ export const listaDeQuestoes: Question[] = [
       "Reto do abdômen."
     ],
     resposta_correta: 0,
-    sistema: "Miologia",
+    regiao: "tronco",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "Suas fibras seguem de cima para baixo e de lateral para medial."
@@ -2471,7 +2607,8 @@ export const listaDeQuestoes: Question[] = [
       "Elevar as costelas inferiores."
     ],
     resposta_correta: 2,
-    sistema: "Miologia",
+    regiao: "tronco",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O transverso é profundo e atua estabilizando o núcleo através da compressão visceral."
@@ -2485,7 +2622,8 @@ export const listaDeQuestoes: Question[] = [
       "Semiespinhal."
     ],
     resposta_correta: 2,
-    sistema: "Miologia",
+    regiao: "tronco",
+    sistema: "miologia",
     dificuldade: 3,
     xp_recompensa: 20,
     explicacao: "A subdivisão lateral para medial é: iliocostal, longuíssimo e espinhal."
@@ -2499,7 +2637,8 @@ export const listaDeQuestoes: Question[] = [
       "Iliocostal."
     ],
     resposta_correta: 2,
-    sistema: "Miologia",
+    regiao: "tronco",
+    sistema: "miologia",
     dificuldade: 3,
     xp_recompensa: 20,
     explicacao: "Os multífidos estabilizam e mantêm a postura das vértebras antes de movimentos globais."
@@ -2513,7 +2652,8 @@ export const listaDeQuestoes: Question[] = [
       "Deprimir as costelas."
     ],
     resposta_correta: 1,
-    sistema: "Miologia",
+    regiao: "tronco",
+    sistema: "miologia",
     dificuldade: 3,
     xp_recompensa: 20,
     explicacao: "Eles auxiliam no controle fino e evitam movimentos rotacionais bruscos indesejados."
@@ -2527,7 +2667,8 @@ export const listaDeQuestoes: Question[] = [
       "Intertransversários."
     ],
     resposta_correta: 2,
-    sistema: "Miologia",
+    regiao: "tronco",
+    sistema: "miologia",
     dificuldade: 2,
     xp_recompensa: 15,
     explicacao: "O eretor da espinha compõe a camada mais externa do complexo muscular profundo do dorso."

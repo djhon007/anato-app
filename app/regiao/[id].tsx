@@ -1,16 +1,23 @@
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { doc, getDoc } from 'firebase/firestore';
+import { ArrowLeft } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
-// CORREÇÃO: Importando as Regiões
-import { auth, db } from '../config/firebase';
-import { trilhaRegioes } from '../config/SistemasConfig';
+// Importações com os caminhos corretos apontando para a pasta src
+import { auth, db } from '../../src/config/firebase';
+import { subSistemas, trilhaRegioes } from '../../src/config/SistemasConfig';
 
-export default function JornadaScreen() {
+export default function SubJornadaScreen() {
   const router = useRouter();
+  // Captura qual região foi clicada (ex: "superior", "inferior", "tronco")
+  const { id } = useLocalSearchParams<{ id: string }>(); 
+  
   const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+
+  // Busca as informações da região clicada no seu arquivo de configuração
+  const regiaoAtual = trilhaRegioes?.find(r => r.id === id);
 
   useEffect(() => {
     const carregarDados = async () => {
@@ -23,7 +30,7 @@ export default function JornadaScreen() {
     carregarDados();
   }, []);
 
-  if (loading) {
+  if (loading || !regiaoAtual) {
     return (
       <View className="flex-1 justify-center items-center bg-gray-50">
         <ActivityIndicator size="large" color="#991b1b" />
@@ -31,33 +38,42 @@ export default function JornadaScreen() {
     );
   }
 
-  const concluidos = userData?.regioes_concluidas || [];
   const progresso = userData?.progresso_sistemas || {};
 
   return (
-    <ScrollView className="flex-1 bg-gray-50 pt-12 px-6">
-      <Text className="text-3xl font-black text-gray-800 mb-8">Sua Jornada</Text>
+    <ScrollView className="flex-1 bg-gray-50 pt-16 px-6">
+      {/* Cabeçalho */}
+      <View className="flex-row items-center mb-8 gap-4">
+        <TouchableOpacity onPress={() => router.back()} className="p-3 bg-white rounded-full shadow-sm border border-gray-100">
+          <ArrowLeft size={20} color="#374151" />
+        </TouchableOpacity>
+        <View>
+          <Text className="text-sm font-bold text-red-800 uppercase tracking-widest">Módulos de Estudo</Text>
+          <Text className="text-3xl font-black text-gray-800">{regiaoAtual.nome}</Text>
+        </View>
+      </View>
 
+      {/* Lista de SubSistemas (Osteologia, Artrologia, Miologia) */}
       <View className="pb-10">
-        {trilhaRegioes.map((regiao, index) => {
+        {subSistemas.map((sistema, index) => {
           
-          const isConcluido = concluidos.includes(regiao.id);
+          // O segredo da V2: A chave composta no banco de dados! Ex: "superior_osteologia"
+          const chaveProgresso = `${id}_${sistema.id}`;
           
-          // LÓGICA V2: Soma todos os acertos que começam com o ID desta região (ex: "superior_osteologia")
-          const acertosDaRegiao = Object.keys(progresso)
-            .filter(key => key.startsWith(`${regiao.id}_`))
-            .reduce((acc, key) => acc + progresso[key], 0);
-
-          // Calcula a porcentagem com base na meta que você colocou no Config (ex: 37 para superior)
-          let porcentagem = isConcluido ? 100 : Math.round((acertosDaRegiao / regiao.meta) * 100) || 0;
+          // Pega os acertos desta chave e calcula a porcentagem
+          const acertos = progresso[chaveProgresso] || 0;
+          let porcentagem = Math.round((acertos / sistema.meta) * 100) || 0;
+          
+          // Se passou de 100%, trava no 100 e considera concluído
+          const isConcluido = porcentagem >= 100;
           if (porcentagem > 100) porcentagem = 100;
 
-          const Icon = regiao.icon;
+          const Icon = sistema.icon;
 
           return (
-            <View key={regiao.id} className="mb-6 flex-row">
-              {/* Linha conectora */}
-              {index !== trilhaRegioes.length - 1 && (
+            <View key={sistema.id} className="mb-6 flex-row">
+              {/* Linha conectora entre as fases */}
+              {index !== subSistemas.length - 1 && (
                 <View className="absolute left-6 top-14 bottom-[-30px] w-0.5 bg-gray-200 z-0" />
               )}
 
@@ -68,23 +84,23 @@ export default function JornadaScreen() {
                 <Icon size={20} color={isConcluido ? 'white' : '#991b1b'} />
               </View>
 
-              {/* Card da Região */}
+              {/* Card da Fase */}
               <TouchableOpacity
-                onPress={() => router.push(`/regiao/${regiao.id}` as any)}
+                onPress={() => router.push(`/fases/${chaveProgresso}` as any)}
                 className="flex-1 ml-4 p-5 rounded-3xl border shadow-sm bg-white border-gray-100"
               >
                 <View className="flex-row justify-between items-center mb-2">
                   <Text className="font-bold text-lg text-gray-800">
-                    {regiao.nome}
+                    {sistema.nome}
                   </Text>
                   <Text className="text-xs font-black text-gray-800">{porcentagem}%</Text>
                 </View>
                 
                 <Text className="text-xs mb-4 text-gray-500">
-                  {regiao.desc}
+                  {sistema.desc}
                 </Text>
 
-                {/* Barra de Progresso Interna */}
+                {/* Barra de Progresso Interna da Fase */}
                 <View className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
                   <View 
                     className={`h-full rounded-full ${isConcluido ? 'bg-green-500' : 'bg-red-800'}`}

@@ -2,7 +2,9 @@ import { useRouter } from 'expo-router';
 import { Activity, Award, BookOpen, Edit2, Star, Trophy, X, Zap } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Image, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { trilhaSistemas } from '../config/SistemasConfig';
+
+// CORREÇÃO: Importar a nova trilha
+import { trilhaRegioes } from '../config/SistemasConfig';
 // Importações do Firebase
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
@@ -26,16 +28,22 @@ export default function PerfilScreen() {
     carregarPerfil();
   }, []);
 
-  // --- MATEMÁTICA PARA A TELA DE PERFIL ---
-  const concluidos = userData?.sistemas_concluidos || [];
+  // --- MATEMÁTICA PARA A TELA DE PERFIL (Adaptada para V2) ---
+  // Lemos as regiões concluídas (com fallback para compatibilidade)
+  const concluidos = userData?.regioes_concluidas || userData?.sistemas_concluidos || [];
   const progresso = userData?.progresso_sistemas || {};
 
   let iniciadosCount = 0;
 
-  trilhaSistemas.forEach((sistema) => {
-    const acertosDesteSistema = progresso[sistema.id] || 0;
+  // Iterar sobre trilhaRegioes
+  trilhaRegioes?.forEach((regiao) => {
+    // Soma os acertos de todas as subcategorias da região (ex: superior_osteologia)
+    const acertosDaRegiao = Object.keys(progresso)
+      .filter(key => key.startsWith(`${regiao.id}_`))
+      .reduce((acc, key) => acc + progresso[key], 0);
+
     // Se tem acertos mas não está concluído, conta como iniciado!
-    if (acertosDesteSistema > 0 && !concluidos.includes(sistema.id)) {
+    if (acertosDaRegiao > 0 && !concluidos.includes(regiao.id)) {
       iniciadosCount++;
     }
   });
@@ -66,14 +74,12 @@ export default function PerfilScreen() {
     setSaving(true);
     try {
       const docRef = doc(db, 'usuarios', auth.currentUser.uid);
-      // O updateDoc atualiza apenas os campos que mandarmos, sem apagar o resto (como xp, nivel)
       await updateDoc(docRef, {
         nome: formNome,
         curso: formCurso,
         periodo: formPeriodo
       });
       
-      // Atualiza a tela imediatamente sem precisar recarregar
       setUserData({ ...userData, nome: formNome, curso: formCurso, periodo: formPeriodo });
       setModalVisible(false);
     } catch (error) {
@@ -84,13 +90,16 @@ export default function PerfilScreen() {
   };
 
   const achievements = [
-    { title: 'Iniciante', desc: 'Completou a primeira fase', icon: <Zap size={20} color="#ef4444" />, done: true },
-    { title: 'Estudioso', desc: 'Completou 2/25 fases', icon: <BookOpen size={20} color="#9ca3af" />, done: false },
-    { title: 'Explorador', desc: 'Iniciou 2/5 sistemas', icon: <Activity size={20} color="#9ca3af" />, done: false },
-    { title: 'Mestre', desc: 'Completou 1/5 sistemas', icon: <Award size={20} color="#9ca3af" />, done: false },
+    { title: 'Iniciante', desc: 'Completou a primeira fase', icon: <Zap size={20} color="#ef4444" />, done: concluidos.length >= 1 },
+    { title: 'Estudioso', desc: `Completou 2/${trilhaRegioes?.length || 3} fases`, icon: <BookOpen size={20} color="#9ca3af" />, done: concluidos.length >= 2 },
+    { title: 'Explorador', desc: 'Iniciou 2 regiões', icon: <Activity size={20} color="#9ca3af" />, done: iniciadosCount >= 2 },
+    { title: 'Mestre', desc: 'Completou tudo', icon: <Award size={20} color="#9ca3af" />, done: concluidos.length >= (trilhaRegioes?.length || 3) },
   ];
 
   const opcoesPeriodo = ['1º período', '2º período', '3º período', '4º período', '5º período', '6º período', '7º período', '8º período', '9º período', '10º período', '11º período', '12º período', 'Professor', 'Monitor', 'Outro'];
+
+  // Usa o avatar Dicebear como fallback
+  const userName = userData?.nome || 'Estudante';
 
   return (
     <ScrollView className="flex-1 bg-white">
@@ -109,7 +118,7 @@ export default function PerfilScreen() {
         {/* Avatar */}
         <View className="relative z-10 mt-2">
           <View className="w-28 h-28 rounded-full border-4 border-white overflow-hidden bg-white shadow-lg">
-            <Image source={{ uri: 'https://picsum.photos/seed/ana/200/200' }} className="w-full h-full" />
+            <Image source={{ uri: "https://api.dicebear.com/8.x/notionists/png?seed=Milo&backgroundColor=fca5a5" }} className="w-full h-full" />
           </View>
           <View className="absolute bottom-0 right-0 w-8 h-8 bg-yellow-400 rounded-full border-2 border-white items-center justify-center">
             <Star size={14} color="white" fill="white" />
@@ -123,7 +132,7 @@ export default function PerfilScreen() {
              <ActivityIndicator color="#991b1b" className="mb-2" />
           ) : (
             <>
-              <Text className="text-2xl font-bold text-gray-800 capitalize">{userData?.nome || 'Estudante'}</Text>
+              <Text className="text-2xl font-bold text-gray-800 capitalize">{userName}</Text>
               
               {userData?.curso ? (
                 <Text className="text-sm font-medium text-red-800 mt-1 mb-3">
@@ -146,13 +155,13 @@ export default function PerfilScreen() {
         <View className="flex-row justify-between gap-4 mb-8">
           <View className="flex-1 bg-white border border-gray-100 p-4 rounded-3xl items-center shadow-sm">
             <Trophy size={24} color="#991b1b" className="mb-2" />
-            <Text className="text-xl font-black text-gray-800">{userData?.sistemas_concluidos?.length || 0}</Text>
+            <Text className="text-xl font-black text-gray-800">{concluidos.length}</Text>
             <Text className="text-[10px] text-gray-400 font-bold uppercase mt-1">Fases Completas</Text>
           </View>
           <View className="flex-1 bg-white border border-gray-100 p-4 rounded-3xl items-center shadow-sm">
             <Activity size={24} color="#991b1b" className="mb-2" />
             <Text className="text-xl font-black text-gray-800">{iniciadosCount}</Text>
-            <Text className="text-[10px] text-gray-400 font-bold uppercase mt-1">Sistemas Iniciados</Text>
+            <Text className="text-[10px] text-gray-400 font-bold uppercase mt-1">Regiões Iniciadas</Text>
           </View>
         </View>
 
@@ -174,14 +183,26 @@ export default function PerfilScreen() {
           </View>
         </View>
 
-        {/* BOTÃO PROVISÓRIO DE ADMIN */}
-        {/*<TouchableOpacity 
-          onPress={() => router.push('/cadastrar-questao' as any)}
-          className="bg-gray-900 p-4 rounded-2xl flex-row justify-center items-center shadow-md mb-10 border border-gray-800"
-        >
-          <Text className="text-white font-bold text-center">🛠️ Cadastrar Questões (Admin)</Text>
-        </TouchableOpacity>*/}
       </View>
+
+      
+
+      {/*
+      <TouchableOpacity 
+        onPress={async () => {
+          Alert.alert("Aguarde", "Injetando questões da V2.0 no Firebase...");
+          try {
+            await executarSeeder();
+            Alert.alert("Sucesso!", "Questões V2.0 carregadas com sucesso!");
+          } catch (error) {
+            Alert.alert("Erro", "Algo deu errado ao subir as questões.");
+          }
+        }} 
+        className="bg-black p-4 m-6 rounded-2xl items-center shadow-lg border-2 border-red-500"
+      >
+        <Text className="text-white font-black text-lg">⚠️ CARREGAR QUESTÕES V2.0 ⚠️</Text>
+      </TouchableOpacity>
+      */}
 
       {/* MODAL DE EDIÇÃO DE PERFIL */}
   <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
@@ -204,7 +225,7 @@ export default function PerfilScreen() {
             <TextInput value={formCurso} onChangeText={setFormCurso} placeholder="Ex: Enfermagem, Medicina..." className="bg-gray-50 border border-gray-200 rounded-xl p-3 text-gray-800" />
           </View>
           
-          {/* NOVO: LIMITADOR DE PERÍODO COM BOTÕES */}
+          {/* LIMITADOR DE PERÍODO COM BOTÕES */}
           <View>
             <Text className="text-xs font-bold text-gray-500 mb-2 uppercase">Período / Semestre</Text>
             <View className="flex-row flex-wrap gap-2">
@@ -223,7 +244,6 @@ export default function PerfilScreen() {
               ))}
             </View>
           </View>
-          {/* FIM DO LIMITADOR */}
 
         </View>
 

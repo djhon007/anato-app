@@ -12,7 +12,8 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import { trilhaSistemas } from '../config/SistemasConfig';
+// NOVO IMPORT: Puxando as duas listas que você criou
+import { subSistemas, trilhaRegioes } from '../config/SistemasConfig';
 import { cadastrarQuestao } from '../services/questoesService';
 
 export default function CadastrarQuestaoScreen() {
@@ -23,7 +24,11 @@ export default function CadastrarQuestaoScreen() {
   const [pergunta, setPergunta] = useState('');
   const [opcoes, setOpcoes] = useState(['', '', '', '']); 
   const [respostaCorreta, setRespostaCorreta] = useState(0); 
-  const [sistema, setSistema] = useState(trilhaSistemas[0].id);
+  
+  // CORREÇÃO: Os estados iniciais agora leem as novas listas
+  const [regiao, setRegiao] = useState(trilhaRegioes[0].id); 
+  const [sistema, setSistema] = useState(subSistemas[0].id);
+  
   const [dificuldade, setDificuldade] = useState('1'); 
   const [xp, setXp] = useState('10'); 
   const [explicacao, setExplicacao] = useState('');
@@ -45,6 +50,7 @@ export default function CadastrarQuestaoScreen() {
       pergunta,
       opcoes,
       resposta_correta: respostaCorreta,
+      regiao: regiao.toLowerCase(),
       sistema: sistema.toLowerCase(), // Boa prática: salva sempre em minúsculo para a Jornada reconhecer
       dificuldade: Number(dificuldade),
       xp_recompensa: Number(xp),
@@ -76,11 +82,28 @@ export default function CadastrarQuestaoScreen() {
 
       <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 100 }} showsVerticalScrollIndicator={false}>
         
-        {/* Tópico e Configurações */}
+        {/* Região e Sistema (Chips) */}
         <View className="mb-6">
-          <Text className="text-xs font-bold text-gray-500 mb-2 uppercase">Sistema / Tópico</Text>
+          <Text className="text-xs font-bold text-gray-500 mb-2 uppercase">Região Anatômica</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row mb-4 overflow-visible">
+            {trilhaRegioes.map((reg) => (
+              <TouchableOpacity
+                key={reg.id}
+                onPress={() => setRegiao(reg.id)}
+                className={`mr-2 px-4 py-2 rounded-xl border-2 ${
+                  regiao === reg.id ? 'bg-red-800 border-red-800' : 'bg-white border-gray-200'
+                }`}
+              >
+                <Text className={`font-bold ${regiao === reg.id ? 'text-white' : 'text-gray-600'}`}>
+                  {reg.nome}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+
+          <Text className="text-xs font-bold text-gray-500 mb-2 uppercase">Sistema</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row overflow-visible">
-            {trilhaSistemas.map((sys) => (
+            {subSistemas.map((sys) => (
               <TouchableOpacity
                 key={sys.id}
                 onPress={() => setSistema(sys.id)}

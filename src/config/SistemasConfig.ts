@@ -1,10 +1,13 @@
-import { Activity, Bone, Brain, Dumbbell, Heart } from 'lucide-react-native';
+import { Activity, Bone, Dumbbell, Footprints, Hand, User } from 'lucide-react-native';
 
-export const trilhaSistemas = [
-  // A meta é a quantidade de ACERTOS necessários para fechar a fase. OBS DAR UM JEITO DE CALCULAR AUTOMAITICAMENTE COM BASE NO NÚMERO DE QUESTÕES DE CADA FASE NO BD
-  { id: 'osteologia', nome: 'Osteologia', desc: 'Estudo dos ossos e esqueleto', icon: Bone, meta: 45 },
-  { id: 'artrologia', nome: 'Artrologia', desc: 'Estudo das articulações', icon: Activity, meta: 47 },
-  { id: 'miologia', nome: 'Miologia', desc: 'Estudo dos músculos e movimentos', icon: Dumbbell, meta: 34 },
-  { id: 'inervação', nome: 'Sistema Nervoso', desc: 'Controle e processamento de informações', icon: Brain, meta: 30 },
-  { id: 'vascularização', nome: 'Sistema Cardiovascular', desc: 'Coração e circulação sanguínea', icon: Heart, meta: 14 },
+export const trilhaRegioes = [
+  { id: 'superior', nome: 'Superior', desc: 'Estudo dos membros superiores', icon: Hand, meta: 36 },
+  { id: 'inferior', nome: 'Inferior', desc: 'Estudo dos membros inferiores', icon: Footprints, meta: 54 },
+  { id: 'tronco', nome: 'Tronco', desc: 'Estudo do tronco', icon: User, meta: 42 },
+];
+
+export const subSistemas = [
+  { id: 'osteologia', nome: 'Osteologia', desc: 'Estudo dos ossos', icon: Bone, meta: 12 },
+  { id: 'artrologia', nome: 'Artrologia', desc: 'Estudo das articulações', icon: Activity, meta: 18 },
+  { id: 'miologia', nome: 'Miologia', desc: 'Estudo dos músculos', icon: Dumbbell, meta: 14 }
 ];
