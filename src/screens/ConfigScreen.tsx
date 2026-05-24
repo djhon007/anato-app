@@ -90,7 +90,7 @@ export default function ConfigScreen() {
         ))}
 
         <View className="items-center py-6 gap-4">
-           <Text className="text-[10px] font-bold uppercase tracking-widest text-gray-400">AnatoApp v2.0.0</Text>
+           <Text className="text-[10px] font-bold uppercase tracking-widest text-gray-400">AnatoApp v2.1.0</Text>
            <TouchableOpacity onPress={handleLogout} className="active:scale-95">
              <Text className="text-sm font-black text-red-600">Sair da conta</Text>
            </TouchableOpacity>

@@ -57,12 +57,15 @@ export default function SubJornadaScreen() {
       <View className="pb-10">
         {subSistemas.map((sistema, index) => {
           
-          // O segredo da V2: A chave composta no banco de dados! Ex: "superior_osteologia"
+          // A chave composta no banco de dados Ex: "superior_osteologia"
           const chaveProgresso = `${id}_${sistema.id}`;
           
-          // Pega os acertos desta chave e calcula a porcentagem
+          // Puxa a meta exata do dicionário (usamos 'as any' ou record para o TS não reclamar da chave dinâmica)
+          const metaExata = (sistema.metas as any)[id] || 1; 
+
+          // Pega os acertos desta chave e calcula a porcentagem com a meta isolada
           const acertos = progresso[chaveProgresso] || 0;
-          let porcentagem = Math.round((acertos / sistema.meta) * 100) || 0;
+          let porcentagem = Math.round((acertos / metaExata) * 100) || 0;
           
           // Se passou de 100%, trava no 100 e considera concluído
           const isConcluido = porcentagem >= 100;
