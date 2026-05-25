@@ -29,7 +29,7 @@ export default function IntroScreen() {
 
         <View className="pt-4 border-t border-gray-100 space-y-4">
           <Text className="text-gray-400 text-[11px] leading-relaxed text-center">
-            Bem vindos à versão beta 2.2.0 do AnatoApp! Atualmente temos as abas de Home, Jornada e Perfil completamente funcionais. Em breve novas telas serão devidamente implementadas.
+            Bem vindos à versão beta 2.2.1 do AnatoApp! Atualmente temos as abas de Home, Jornada e Perfil completamente funcionais. Em breve novas telas serão devidamente implementadas.
           </Text>
         </View>
 

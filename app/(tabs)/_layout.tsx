@@ -1,8 +1,10 @@
 import { Tabs } from 'expo-router';
 import { Book, Home, MessageSquare, Settings, User } from 'lucide-react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { THEME } from '../../src/constants';
 
 export default function TabsLayout() {
+  const insets = useSafeAreaInsets();
   return (
     <Tabs
       screenOptions={{
@@ -12,8 +14,11 @@ export default function TabsLayout() {
         tabBarStyle: {
           borderTopWidth: 1,
           borderTopColor: '#f3f4f6',
-          height: 75,
-          paddingBottom: 12,
+          // Se o celular tem a barra (insets.bottom > 0), soma o tamanho dela + 10px. Se não, usa 20px padrão.
+          paddingBottom: insets.bottom ? insets.bottom + 10 : 20, 
+          
+          // Aumenta a altura total do menu para compensar o empurrão para cima
+          height: insets.bottom ? 60 + insets.bottom : 70,
           paddingTop: 8,
           backgroundColor: '#ffffff'
         },

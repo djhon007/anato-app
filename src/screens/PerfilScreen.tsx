@@ -249,8 +249,12 @@ export default function PerfilScreen() {
         {/* CARROSSEL DE AVATARES */}
           <View className="mb-4">
             <Text className="text-xs font-bold text-gray-500 mb-2 uppercase">Escolha seu Avatar</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row overflow-visible">
-              {avataresDisponiveis.map((avatarUrl, index) => (
+            <ScrollView 
+                horizontal 
+                showsHorizontalScrollIndicator={false} 
+                contentContainerStyle={{ paddingRight: 24, paddingVertical: 4 }} // Dá um espaço para o último avatar não grudar na borda
+              >
+                {avataresDisponiveis.map((avatarUrl, index) => (
                 <TouchableOpacity
                   key={index}
                   onPress={() => setFormAvatar(avatarUrl)}
