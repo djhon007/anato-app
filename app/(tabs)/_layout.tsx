@@ -19,11 +19,11 @@ export default function TabsLayout() {
           borderTopWidth: 1,
           borderTopColor: '#f3f4f6',
           
-          // Android Nativo: 70px. Web: 85px (para compensar a barra). iOS: dinâmico.
-          height: isAndroid ? 70 : (isWeb ? 85 : 65 + insets.bottom),
+          // 1. A ALTURA CRESCE NA WEB
+          height: isWeb ? 90 : (isAndroid ? 100 : 65 + insets.bottom),
           
-          // Android Nativo: 10px. Web: 20px de margem interna. iOS: dinâmico.
-          paddingBottom: isAndroid ? 10 : (isWeb ? 20 : insets.bottom),
+          // 2. O FUNDO BRANCO ESTICA PARA BAIXO NA WEB (Esta é a almofada dos botões)
+          paddingBottom: isWeb ? 25 : (isAndroid ? 50 : insets.bottom),
           
           paddingTop: 10,
         },
