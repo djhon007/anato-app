@@ -1,4 +1,5 @@
 import { useRouter } from 'expo-router';
+import { onAuthStateChanged } from 'firebase/auth';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { Activity, BookOpen, ChevronRight, ClipboardCheck, GraduationCap, Map as MapIcon, Trophy } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
@@ -13,22 +14,48 @@ export default function HomeScreen() {
   const user = auth.currentUser;
   const [userData, setUserData] = useState<any>(null);
 
+  const [usuarioAutenticado, setUsuarioAutenticado] = useState<any>(null);
+  const [verificandoAuth, setVerificandoAuth] = useState(true);
+
+  // VIGIA 1: Verifica o Login (Evita a tela branca)
   useEffect(() => {
-    // Se o usuário não estiver logado ainda, não faz nada
-    if (!auth.currentUser) return;
+    const unsubscribeAuth = onAuthStateChanged(auth, (user: any) => {
+      setUsuarioAutenticado(user);
+      setVerificandoAuth(false);
+    });
+    return () => unsubscribeAuth();
+  }, []);
 
-    const docRef = doc(db, 'usuarios', auth.currentUser.uid);
+  // VIGIA 2: Fica lendo o Banco de Dados em tempo real (Avatar sempre atualizado)
+  useEffect(() => {
+    if (!usuarioAutenticado) return;
 
-    // O onSnapshot escuta o banco em TEMPO REAL
-    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+    const docRef = doc(db, 'usuarios', usuarioAutenticado.uid);
+    const unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
         setUserData(docSnap.data());
       }
     });
 
-    // Limpa a escuta se o usuário sair do aplicativo (boa prática de memória)
-    return () => unsubscribe();
-  }, []);
+    return () => unsubscribeSnapshot();
+  }, [usuarioAutenticado]);
+
+  // Redirecionamento de Segurança
+  useEffect(() => {
+    if (!verificandoAuth && !usuarioAutenticado) {
+      router.replace('/');
+    }
+  }, [usuarioAutenticado, verificandoAuth]);
+
+  // Tela de Carregamento Inicial
+  if (verificandoAuth || !usuarioAutenticado) {
+    return (
+      <View className="flex-1 justify-center items-center bg-gray-50">
+        <ActivityIndicator size="large" color="#991b1b" />
+        <Text className="text-gray-500 mt-4">Conectando...</Text>
+      </View>
+    );
+  }
 
   // Lemos regioes_concluidas (com fallback para sistemas_concluidos para não quebrar usuários antigos)
   const concluidos = userData?.regioes_concluidas || userData?.sistemas_concluidos || [];

@@ -1,19 +1,20 @@
 import { useRouter } from 'expo-router';
+import { onAuthStateChanged } from 'firebase/auth';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { Activity, Award, BookOpen, Edit2, Star, Trophy, X, Zap } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Image, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { avataresDisponiveis, avatarPadrao, trilhaRegioes } from '../config/SistemasConfig';
 
-// E onde você definia o estado inicial, mude para:
-const [formAvatar, setFormAvatar] = useState(avatarPadrao);
-
-// CORREÇÃO: Importar a nova trilha
-// Importações do Firebase
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+// Importações de Configuração
 import { auth, db } from '../config/firebase';
+import { avataresDisponiveis, avatarPadrao, trilhaRegioes } from '../config/SistemasConfig';
 
 export default function PerfilScreen() {
   const router = useRouter();
+
+  // Estados de Autenticação
+  const [usuarioAutenticado, setUsuarioAutenticado] = useState<any>(null);
+  const [verificandoAuth, setVerificandoAuth] = useState(true);
 
   // Estados para guardar os dados do banco
   const [userData, setUserData] = useState<any>(null);
@@ -24,49 +25,46 @@ export default function PerfilScreen() {
   const [formNome, setFormNome] = useState('');
   const [formCurso, setFormCurso] = useState('');
   const [formPeriodo, setFormPeriodo] = useState('');
+  const [formAvatar, setFormAvatar] = useState(avatarPadrao);
   const [saving, setSaving] = useState(false);
 
-  
-  const [formAvatar, setFormAvatar] = useState(avatarPadrao);
-  // Assim que a tela abre, ele busca os dados no Firebase
+  // 1. O Olheiro do Firebase (Autenticação)
   useEffect(() => {
-    carregarPerfil();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUsuarioAutenticado(user);
+      setVerificandoAuth(false);
+    });
+    return () => unsubscribe();
   }, []);
 
-  // --- MATEMÁTICA PARA A TELA DE PERFIL (Adaptada para V2) ---
-  // Lemos as regiões concluídas (com fallback para compatibilidade)
-  const concluidos = userData?.regioes_concluidas || userData?.sistemas_concluidos || [];
-  const progresso = userData?.progresso_sistemas || {};
-
-  let iniciadosCount = 0;
-
-  // Iterar sobre trilhaRegioes
-  trilhaRegioes?.forEach((regiao) => {
-    // Soma os acertos de todas as subcategorias da região (ex: superior_osteologia)
-    const acertosDaRegiao = Object.keys(progresso)
-      .filter(key => key.startsWith(`${regiao.id}_`))
-      .reduce((acc, key) => acc + progresso[key], 0);
-
-    // Se tem acertos mas não está concluído, conta como iniciado!
-    if (acertosDaRegiao > 0 && !concluidos.includes(regiao.id)) {
-      iniciadosCount++;
+  // 2. O Redirecionamento Correto
+  useEffect(() => {
+    if (!verificandoAuth && !usuarioAutenticado) {
+      router.replace('/');
     }
-  });
+  }, [usuarioAutenticado, verificandoAuth]);
+
+  // 3. O Gatilho para carregar os dados (CORRIGIDO: Agora a função é chamada!)
+  useEffect(() => {
+    if (usuarioAutenticado) {
+      carregarPerfil();
+    }
+  }, [usuarioAutenticado]);
 
   const carregarPerfil = async () => {
-    if (!auth.currentUser) return;
     try {
-      const docRef = doc(db, 'usuarios', auth.currentUser.uid);
+      const docRef = doc(db, 'usuarios', usuarioAutenticado.uid);
       const docSnap = await getDoc(docRef);
       
       if (docSnap.exists()) {
         const data = docSnap.data();
         setUserData(data);
+        
         // Preenche o formulário com os dados atuais
         setFormNome(data.nome || '');
         setFormCurso(data.curso || '');
         setFormPeriodo(data.periodo || '');
-        setFormAvatar(data.avatar || avataresDisponiveis[0]);
+        setFormAvatar(data.avatar || avatarPadrao);
       }
     } catch (error) {
       console.error("Erro ao carregar perfil:", error);
@@ -76,10 +74,9 @@ export default function PerfilScreen() {
   };
 
   const salvarEdicao = async () => {
-    if (!auth.currentUser) return;
     setSaving(true);
     try {
-      const docRef = doc(db, 'usuarios', auth.currentUser.uid);
+      const docRef = doc(db, 'usuarios', usuarioAutenticado.uid);
       await updateDoc(docRef, {
         nome: formNome,
         curso: formCurso,
@@ -87,7 +84,14 @@ export default function PerfilScreen() {
         avatar: formAvatar
       });
       
-      setUserData({ ...userData, nome: formNome, curso: formCurso, periodo: formPeriodo, avatar: formAvatar });
+      // Atualiza o estado local para refletir na tela imediatamente
+      setUserData({ 
+        ...userData, 
+        nome: formNome, 
+        curso: formCurso, 
+        periodo: formPeriodo, 
+        avatar: formAvatar 
+      });
       setModalVisible(false);
     } catch (error) {
       Alert.alert('Erro', 'Não foi possível atualizar o perfil.');
@@ -95,6 +99,22 @@ export default function PerfilScreen() {
       setSaving(false);
     }
   };
+
+  // --- MATEMÁTICA PARA A TELA DE PERFIL ---
+  const concluidos = userData?.regioes_concluidas || userData?.sistemas_concluidos || [];
+  const progresso = userData?.progresso_sistemas || {};
+
+  let iniciadosCount = 0;
+
+  trilhaRegioes?.forEach((regiao) => {
+    const acertosDaRegiao = Object.keys(progresso)
+      .filter(key => key.startsWith(`${regiao.id}_`))
+      .reduce((acc, key) => acc + progresso[key], 0);
+
+    if (acertosDaRegiao > 0 && !concluidos.includes(regiao.id)) {
+      iniciadosCount++;
+    }
+  });
 
   const achievements = [
     { title: 'Iniciante', desc: 'Completou a primeira fase', icon: <Zap size={20} color="#ef4444" />, done: concluidos.length >= 1 },
@@ -105,15 +125,14 @@ export default function PerfilScreen() {
 
   const opcoesPeriodo = ['1º período', '2º período', '3º período', '4º período', '5º período', '6º período', '7º período', '8º período', '9º período', '10º período', '11º período', '12º período', 'Professor', 'Monitor', 'Outro'];
 
-  // Usa o avatar Dicebear como fallback
   const userName = userData?.nome || 'Estudante';
 
-  // Adicione isso antes do return da sua tela
-  if (!auth.currentUser) {
+  // Tela de Carregamento Inicial (Protege a renderização)
+  if (verificandoAuth || !usuarioAutenticado) {
     return (
       <View className="flex-1 justify-center items-center bg-gray-50">
         <ActivityIndicator size="large" color="#991b1b" />
-        <Text className="text-gray-500 mt-4">Carregando seus dados...</Text>
+        <Text className="text-gray-500 mt-4">Conectando ao servidor...</Text>
       </View>
     );
   }
@@ -135,7 +154,7 @@ export default function PerfilScreen() {
         {/* Avatar */}
         <View className="relative z-10 mt-2">
           <View className="w-28 h-28 rounded-full border-4 border-white overflow-hidden bg-white shadow-lg">
-            <Image source={{ uri: userData?.avatar || avataresDisponiveis[0] }} className="w-full h-full" />
+            <Image source={{ uri: userData?.avatar || avatarPadrao }} className="w-full h-full" />
           </View>
           <View className="absolute bottom-0 right-0 w-8 h-8 bg-yellow-400 rounded-full border-2 border-white items-center justify-center">
             <Star size={14} color="white" fill="white" />
@@ -199,106 +218,88 @@ export default function PerfilScreen() {
             ))}
           </View>
         </View>
-
       </View>
-
-      
-
-      {/*
-      <TouchableOpacity 
-        onPress={async () => {
-          Alert.alert("Aguarde", "Injetando questões da V2.0 no Firebase...");
-          try {
-            await executarSeeder();
-            Alert.alert("Sucesso!", "Questões V2.0 carregadas com sucesso!");
-          } catch (error) {
-            Alert.alert("Erro", "Algo deu errado ao subir as questões.");
-          }
-        }} 
-        className="bg-black p-4 m-6 rounded-2xl items-center shadow-lg border-2 border-red-500"
-      >
-        <Text className="text-white font-black text-lg">⚠️ CARREGAR QUESTÕES V2.0 ⚠️</Text>
-      </TouchableOpacity>
-      */}
 
       {/* MODAL DE EDIÇÃO DE PERFIL */}
-  <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
-    <View className="flex-1 justify-end bg-black/50">
-      <View className="bg-white rounded-t-3xl p-6">
-        <View className="flex-row justify-between items-center mb-6">
-          <Text className="text-xl font-bold text-gray-800">Editar Perfil</Text>
-          <TouchableOpacity onPress={() => setModalVisible(false)} className="p-2 bg-gray-100 rounded-full">
-            <X size={20} color="#374151" />
-          </TouchableOpacity>
-        </View>
-
-        {/* CARROSSEL DE AVATARES */}
-          <View className="mb-4">
-            <Text className="text-xs font-bold text-gray-500 mb-2 uppercase">Escolha seu Avatar</Text>
-            <ScrollView 
-                horizontal 
-                showsHorizontalScrollIndicator={false} 
-                contentContainerStyle={{ paddingRight: 24, paddingVertical: 4 }} // Dá um espaço para o último avatar não grudar na borda
-              >
-                {avataresDisponiveis.map((avatarUrl, index) => (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => setFormAvatar(avatarUrl)}
-                  className={`mr-3 rounded-full border-4 ${
-                    formAvatar === avatarUrl ? 'border-red-800' : 'border-transparent'
-                  }`}
-                >
-                  <Image 
-                    source={{ uri: avatarUrl }} 
-                    style={{ width: 60, height: 60, borderRadius: 30 }} 
-                  />
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
-
-        <View className="space-y-4 mb-8">
-          <View>
-            <Text className="text-xs font-bold text-gray-500 mb-1 uppercase">Nome de Exibição</Text>
-            <TextInput value={formNome} onChangeText={setFormNome} placeholder="O seu nome" className="bg-gray-50 border border-gray-200 rounded-xl p-3 text-gray-800" />
-          </View>
-          <View>
-            <Text className="text-xs font-bold text-gray-500 mb-1 uppercase">Curso</Text>
-            <TextInput value={formCurso} onChangeText={setFormCurso} placeholder="Ex: Enfermagem, Medicina..." className="bg-gray-50 border border-gray-200 rounded-xl p-3 text-gray-800" />
-          </View>
-          
-          {/* LIMITADOR DE PERÍODO COM BOTÕES */}
-          <View>
-            <Text className="text-xs font-bold text-gray-500 mb-2 uppercase">Período / Semestre</Text>
-            <View className="flex-row flex-wrap gap-2">
-              {opcoesPeriodo.map((p) => (
-                <TouchableOpacity
-                  key={p}
-                  onPress={() => setFormPeriodo(p)}
-                  className={`px-4 py-2 rounded-xl border-2 ${
-                    formPeriodo === p ? 'bg-red-800 border-red-800' : 'bg-white border-gray-200'
-                  }`}
-                >
-                  <Text className={`font-bold ${formPeriodo === p ? 'text-white' : 'text-gray-600'}`}>
-                    {p}
-                  </Text>
-                </TouchableOpacity>
-              ))}
+      <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
+        <View className="flex-1 justify-end bg-black/50">
+          <View className="bg-white rounded-t-3xl p-6">
+            <View className="flex-row justify-between items-center mb-6">
+              <Text className="text-xl font-bold text-gray-800">Editar Perfil</Text>
+              <TouchableOpacity onPress={() => setModalVisible(false)} className="p-2 bg-gray-100 rounded-full">
+                <X size={20} color="#374151" />
+              </TouchableOpacity>
             </View>
+
+            <View className="space-y-4 mb-8">
+              
+              {/* CARROSSEL DE AVATARES (CORRIGIDO: Agora aparece apenas uma vez) */}
+              <View>
+                <Text className="text-xs font-bold text-gray-500 mb-2 uppercase">Escolha seu Avatar</Text>
+                <ScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false} 
+                  contentContainerStyle={{ paddingRight: 24, paddingVertical: 4 }} 
+                >
+                  {avataresDisponiveis.map((avatarUrl, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => setFormAvatar(avatarUrl)}
+                      className={`mr-3 rounded-full border-4 ${
+                        formAvatar === avatarUrl ? 'border-red-800' : 'border-transparent'
+                      }`}
+                    >
+                      <Image 
+                        source={{ uri: avatarUrl }} 
+                        style={{ width: 60, height: 60, borderRadius: 30 }} 
+                      />
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+
+              {/* CAMPOS DE TEXTO */}
+              <View>
+                <Text className="text-xs font-bold text-gray-500 mb-1 uppercase">Nome de Exibição</Text>
+                <TextInput value={formNome} onChangeText={setFormNome} placeholder="O seu nome" className="bg-gray-50 border border-gray-200 rounded-xl p-3 text-gray-800" />
+              </View>
+              <View>
+                <Text className="text-xs font-bold text-gray-500 mb-1 uppercase">Curso</Text>
+                <TextInput value={formCurso} onChangeText={setFormCurso} placeholder="Ex: Enfermagem, Medicina..." className="bg-gray-50 border border-gray-200 rounded-xl p-3 text-gray-800" />
+              </View>
+              
+              {/* LIMITADOR DE PERÍODO COM BOTÕES */}
+              <View>
+                <Text className="text-xs font-bold text-gray-500 mb-2 uppercase">Período / Semestre</Text>
+                <View className="flex-row flex-wrap gap-2">
+                  {opcoesPeriodo.map((p) => (
+                    <TouchableOpacity
+                      key={p}
+                      onPress={() => setFormPeriodo(p)}
+                      className={`px-4 py-2 rounded-xl border-2 ${
+                        formPeriodo === p ? 'bg-red-800 border-red-800' : 'bg-white border-gray-200'
+                      }`}
+                    >
+                      <Text className={`font-bold ${formPeriodo === p ? 'text-white' : 'text-gray-600'}`}>
+                        {p}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+
+            </View>
+
+            <TouchableOpacity 
+              onPress={salvarEdicao} 
+              disabled={saving}
+              className="bg-red-800 p-4 rounded-2xl items-center flex-row justify-center shadow-sm"
+            >
+              {saving ? <ActivityIndicator color="white" /> : <Text className="text-white font-bold text-lg">Salvar Alterações</Text>}
+            </TouchableOpacity>
           </View>
-
         </View>
-
-        <TouchableOpacity 
-          onPress={salvarEdicao} 
-          disabled={saving}
-          className="bg-red-800 p-4 rounded-2xl items-center flex-row justify-center shadow-sm"
-        >
-          {saving ? <ActivityIndicator color="white" /> : <Text className="text-white font-bold text-lg">Salvar Alterações</Text>}
-        </TouchableOpacity>
-      </View>
-    </View>
-  </Modal>
+      </Modal>
 
     </ScrollView>
   );
