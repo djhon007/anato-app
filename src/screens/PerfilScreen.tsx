@@ -108,6 +108,16 @@ export default function PerfilScreen() {
   // Usa o avatar Dicebear como fallback
   const userName = userData?.nome || 'Estudante';
 
+  // Adicione isso antes do return da sua tela
+  if (!auth.currentUser) {
+    return (
+      <View className="flex-1 justify-center items-center bg-gray-50">
+        <ActivityIndicator size="large" color="#991b1b" />
+        <Text className="text-gray-500 mt-4">Carregando seus dados...</Text>
+      </View>
+    );
+  }
+
   return (
     <ScrollView className="flex-1 bg-white">
       {/* Upper header section */}

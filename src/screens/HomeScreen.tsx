@@ -1,8 +1,8 @@
 import { useRouter } from 'expo-router';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore';
 import { Activity, BookOpen, ChevronRight, ClipboardCheck, GraduationCap, Map as MapIcon, Trophy } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { avatarPadrao, trilhaRegioes } from '../config/SistemasConfig';
 
 // Importações do Firebase consolidadas e Nova Trilha
@@ -14,13 +14,20 @@ export default function HomeScreen() {
   const [userData, setUserData] = useState<any>(null);
 
   useEffect(() => {
-    const carregarDados = async () => {
-      if (!auth.currentUser) return;
-      const docRef = doc(db, 'usuarios', auth.currentUser.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) setUserData(docSnap.data());
-    };
-    carregarDados();
+    // Se o usuário não estiver logado ainda, não faz nada
+    if (!auth.currentUser) return;
+
+    const docRef = doc(db, 'usuarios', auth.currentUser.uid);
+
+    // O onSnapshot escuta o banco em TEMPO REAL
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        setUserData(docSnap.data());
+      }
+    });
+
+    // Limpa a escuta se o usuário sair do aplicativo (boa prática de memória)
+    return () => unsubscribe();
   }, []);
 
   // Lemos regioes_concluidas (com fallback para sistemas_concluidos para não quebrar usuários antigos)
@@ -59,6 +66,15 @@ export default function HomeScreen() {
   
   // Tenta pegar o nome que está no banco. Se não tiver, usa o e-mail antes do @. Se não tiver, usa 'Estudante'
   const userName = userData?.nome || (user?.email ? user.email.split('@')[0] : 'Estudante');
+
+  if (!auth.currentUser) {
+    return (
+      <View className="flex-1 justify-center items-center bg-gray-50">
+        <ActivityIndicator size="large" color="#991b1b" />
+        <Text className="text-gray-500 mt-4">Carregando seus dados...</Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView className="flex-1 bg-gray-50">
