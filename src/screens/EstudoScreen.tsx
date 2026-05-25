@@ -9,15 +9,15 @@ export default function EstudoScreen() {
 
   const videoContent: Record<string, any[]> = {
     '1ª temporada - Introdução à Anatomia': [
-      { id: 1, title: 'Introdução à Anatomia [01/02]', dur: '--:--', url: 'https://youtu.be/G9W3XsaYL7M?si=MUYoRskJiRXwZypv' },
-      { id: 2, title: 'Introdução à Anatomia [02/02]', dur: '--:--', url: 'https://youtu.be/SzUlkkG0pBE?si=Ev8pPzT8pQG5xJMK' },
-      { id: 3, title: 'Generalidades dos Ossos', dur: '--:--', url: 'https://youtu.be/0oNC4QcP6rc?si=ZAHPKUbADcG1iedY' },
-      { id: 4, title: 'Nomenclatura dos Ossos [Esqueleto Axial] (1)', dur: '--:--', url: 'https://youtu.be/01pjWGIa3Xk?si=8TT8ASIAtYQr2xjC' },
-      { id: 5, title: 'Nomenclatura dos Ossos [Esqueleto Axial] (2)', dur: '--:--', url: 'https://youtu.be/gJqak1X0dGs?si=_gfXgd5gNN5ihNRP' },
-      { id: 6, title: 'Generalidade das Articulações', dur: '--:--', url: 'https://youtu.be/FEINjQfcVfA?si=uJDp_g0FDStQKsTr' },
-      { id: 7, title: 'Articulações Sinoviais', dur: '--:--', url: 'https://youtu.be/flyFoF4YwFc?si=BRFO5bsVc5y5BLwE' },
-      { id: 8, title: 'Generalidades dos Músculos [01/02]', dur: '--:--', url: 'https://youtu.be/htvcAjgQ78M?si=aWPLqZk7b5OBNhXv' },
-      { id: 9, title: 'Generalidades dos Músculos [02/02]', dur: '--:--', url: 'https://youtu.be/F0j3BJR1r8c?si=LLr5KrS4Ta5dGTiZ' },
+      { id: 1, title: 'Introdução à Anatomia [01/02]', dur: '16:58', url: 'https://youtu.be/G9W3XsaYL7M?si=MUYoRskJiRXwZypv' },
+      { id: 2, title: 'Introdução à Anatomia [02/02]', dur: '22:29', url: 'https://youtu.be/SzUlkkG0pBE?si=Ev8pPzT8pQG5xJMK' },
+      { id: 3, title: 'Generalidades dos Ossos', dur: '18:34', url: 'https://youtu.be/0oNC4QcP6rc?si=ZAHPKUbADcG1iedY' },
+      { id: 4, title: 'Nomenclatura dos Ossos [Esqueleto Axial] (1)', dur: '18:57', url: 'https://youtu.be/01pjWGIa3Xk?si=8TT8ASIAtYQr2xjC' },
+      { id: 5, title: 'Nomenclatura dos Ossos [Esqueleto Axial] (2)', dur: '28:11', url: 'https://youtu.be/gJqak1X0dGs?si=_gfXgd5gNN5ihNRP' },
+      { id: 6, title: 'Generalidade das Articulações', dur: '25:43', url: 'https://youtu.be/FEINjQfcVfA?si=uJDp_g0FDStQKsTr' },
+      { id: 7, title: 'Articulações Sinoviais', dur: '28:02', url: 'https://youtu.be/flyFoF4YwFc?si=BRFO5bsVc5y5BLwE' },
+      { id: 8, title: 'Generalidades dos Músculos [01/02]', dur: '24:18', url: 'https://youtu.be/htvcAjgQ78M?si=aWPLqZk7b5OBNhXv' },
+      { id: 9, title: 'Generalidades dos Músculos [02/02]', dur: '23:53', url: 'https://youtu.be/F0j3BJR1r8c?si=LLr5KrS4Ta5dGTiZ' },
     ],
     '2ª temporada - Membros Superiores': [
       { id: 10, title: 'Osteologia da Clavícula', dur: '11:13', url: 'https://youtu.be/OncazDKP6Lw?si=7J50Wq1VEQJpM9WQ' },
