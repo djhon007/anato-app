@@ -6,6 +6,8 @@ import { THEME } from '../../src/constants';
 
 export default function TabsLayout() {
   const insets = useSafeAreaInsets();
+  const isWeb = Platform.OS === 'web';
+  const isAndroid = Platform.OS === 'android';
   return (
     <Tabs
       screenOptions={{
@@ -17,18 +19,16 @@ export default function TabsLayout() {
           borderTopWidth: 1,
           borderTopColor: '#f3f4f6',
           
-          // O Android fica com 70px fixos. O iOS soma os 65px + o tamanho do "risquinho" inferior.
-          height: Platform.OS === 'android' ? 70 : 65 + insets.bottom,
+          // Android Nativo: 70px. Web: 85px (para compensar a barra). iOS: dinâmico.
+          height: isAndroid ? 70 : (isWeb ? 85 : 65 + insets.bottom),
           
-          // No Android, um respiro fixo de 10px. No iOS, respeita a área segura.
-          paddingBottom: Platform.OS === 'android' ? 10 : insets.bottom,
+          // Android Nativo: 10px. Web: 20px de margem interna. iOS: dinâmico.
+          paddingBottom: isAndroid ? 10 : (isWeb ? 20 : insets.bottom),
           
-          // Dá um pequeno respiro no topo para os ícones não colarem na linha
           paddingTop: 10,
         },
-        // Adicione esta propriedade para empurrar o texto um pouquinho para cima no Android
         tabBarLabelStyle: {
-          paddingBottom: Platform.OS === 'android' ? 5 : 0,
+          paddingBottom: isAndroid ? 5 : 0,
         },
       }}
     >
