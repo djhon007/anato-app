@@ -30,3 +30,34 @@ export const subSistemas = [
     metas: { superior: 9, inferior: 20, tronco: 15 } // Coloque o número real de questões aqui
   }
 ];
+
+// Adicione no final do seu SistemasConfig.ts
+export const avataresDisponiveis = [
+    // --- Femininos / Neutros ---
+    'https://api.dicebear.com/8.x/notionists/png?seed=Mia&backgroundColor=f9a8d4',     // Fundo Rosa
+    'https://api.dicebear.com/8.x/notionists/png?seed=Sophia&backgroundColor=d8b4fe',  // Fundo Lilás
+    'https://api.dicebear.com/8.x/notionists/png?seed=Chloe&backgroundColor=5eead4',   // Fundo Verde Água
+    'https://api.dicebear.com/8.x/notionists/png?seed=Jasmine&backgroundColor=fdba74', // Fundo Laranja
+    'https://api.dicebear.com/8.x/notionists/png?seed=Zoe&backgroundColor=fda4af',     // Fundo Coral
+    'https://api.dicebear.com/8.x/notionists/png?seed=Jul1a12s&backgroundColor=f9a8d4',     // Fundo Rosa
+
+    //neutros
+
+    'https://api.dicebear.com/8.x/notionists/png?seed=Skyler&backgroundColor=d8b4fe',  // Fundo Lilás
+    'https://api.dicebear.com/8.x/notionists/png?seed=River&backgroundColor=5eead4',   // Fundo Verde Água
+    'https://api.dicebear.com/8.x/notionists/png?seed=Phoenix&backgroundColor=fdba74', // Fundo Laranja
+    'https://api.dicebear.com/8.x/notionists/png?seed=Quinn&backgroundColor=fda4af',     // Fundo Coral
+    'https://api.dicebear.com/8.x/notionists/png?seed=Riley67&backgroundColor=cbd5e1',     // Fundo Cinza Azulado
+    'https://api.dicebear.com/8.x/notionists/png?seed=Charlie22&backgroundColor=f9a8d4',     // Fundo Rosa
+    
+    // --- Masculinos / Neutros ---
+    'https://api.dicebear.com/8.x/notionists/png?seed=Milo&backgroundColor=fca5a5',    // Fundo Vermelho
+    'https://api.dicebear.com/8.x/notionists/png?seed=Felix&backgroundColor=93c5fd',   // Fundo Azul
+    'https://api.dicebear.com/8.x/notionists/png?seed=Leochiu&backgroundColor=86efac',     // Fundo Verde
+    'https://api.dicebear.com/8.x/notionists/png?seed=Lucas&backgroundColor=fde047',   // Fundo Amarelo
+    'https://api.dicebear.com/8.x/notionists/png?seed=Alex&backgroundColor=cbd5e1',     // Fundo Cinza Azulado
+    'https://api.dicebear.com/8.x/notionists/png?seed=Joao&backgroundColor=fca5a5',     // Fundo Vermelho
+  ];
+
+// Define o avatar índice 5 (Milo vermelho) como o padrão para novos usuários
+export const avatarPadrao = avataresDisponiveis[5];
