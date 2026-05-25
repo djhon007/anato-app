@@ -23,6 +23,35 @@ export default function PerfilScreen() {
   const [formPeriodo, setFormPeriodo] = useState('');
   const [saving, setSaving] = useState(false);
 
+  const avataresDisponiveis = [
+    // --- Femininos / Neutros ---
+    'https://api.dicebear.com/8.x/notionists/png?seed=Mia&backgroundColor=f9a8d4',     // Fundo Rosa
+    'https://api.dicebear.com/8.x/notionists/png?seed=Sophia&backgroundColor=d8b4fe',  // Fundo Lilás
+    'https://api.dicebear.com/8.x/notionists/png?seed=Chloe&backgroundColor=5eead4',   // Fundo Verde Água
+    'https://api.dicebear.com/8.x/notionists/png?seed=Jasmine&backgroundColor=fdba74', // Fundo Laranja
+    'https://api.dicebear.com/8.x/notionists/png?seed=Zoe&backgroundColor=fda4af',     // Fundo Coral
+    'https://api.dicebear.com/8.x/notionists/png?seed=Jul1a12s&backgroundColor=f9a8d4',     // Fundo Rosa
+
+    //neutros
+
+    'https://api.dicebear.com/8.x/notionists/png?seed=Skyler&backgroundColor=d8b4fe',  // Fundo Lilás
+    'https://api.dicebear.com/8.x/notionists/png?seed=River&backgroundColor=5eead4',   // Fundo Verde Água
+    'https://api.dicebear.com/8.x/notionists/png?seed=Phoenix&backgroundColor=fdba74', // Fundo Laranja
+    'https://api.dicebear.com/8.x/notionists/png?seed=Quinn&backgroundColor=fda4af',     // Fundo Coral
+    'https://api.dicebear.com/8.x/notionists/png?seed=Riley67&backgroundColor=cbd5e1',     // Fundo Cinza Azulado
+    'https://api.dicebear.com/8.x/notionists/png?seed=Charlie22&backgroundColor=f9a8d4',     // Fundo Rosa
+    
+    // --- Masculinos / Neutros ---
+    'https://api.dicebear.com/8.x/notionists/png?seed=Milo&backgroundColor=fca5a5',    // Fundo Vermelho
+    'https://api.dicebear.com/8.x/notionists/png?seed=Felix&backgroundColor=93c5fd',   // Fundo Azul
+    'https://api.dicebear.com/8.x/notionists/png?seed=Leochiu&backgroundColor=86efac',     // Fundo Verde
+    'https://api.dicebear.com/8.x/notionists/png?seed=Lucas&backgroundColor=fde047',   // Fundo Amarelo
+    'https://api.dicebear.com/8.x/notionists/png?seed=Alex&backgroundColor=cbd5e1',     // Fundo Cinza Azulado
+    'https://api.dicebear.com/8.x/notionists/png?seed=Joao&backgroundColor=fca5a5',     // Fundo Vermelho
+  ];
+  
+  const [formAvatar, setFormAvatar] = useState(avataresDisponiveis[0]);
+
   // Assim que a tela abre, ele busca os dados no Firebase
   useEffect(() => {
     carregarPerfil();
@@ -61,6 +90,7 @@ export default function PerfilScreen() {
         setFormNome(data.nome || '');
         setFormCurso(data.curso || '');
         setFormPeriodo(data.periodo || '');
+        setFormAvatar(data.avatar || avataresDisponiveis[0]);
       }
     } catch (error) {
       console.error("Erro ao carregar perfil:", error);
@@ -77,10 +107,11 @@ export default function PerfilScreen() {
       await updateDoc(docRef, {
         nome: formNome,
         curso: formCurso,
-        periodo: formPeriodo
+        periodo: formPeriodo,
+        avatar: formAvatar
       });
       
-      setUserData({ ...userData, nome: formNome, curso: formCurso, periodo: formPeriodo });
+      setUserData({ ...userData, nome: formNome, curso: formCurso, periodo: formPeriodo, avatar: formAvatar });
       setModalVisible(false);
     } catch (error) {
       Alert.alert('Erro', 'Não foi possível atualizar o perfil.');
@@ -118,7 +149,7 @@ export default function PerfilScreen() {
         {/* Avatar */}
         <View className="relative z-10 mt-2">
           <View className="w-28 h-28 rounded-full border-4 border-white overflow-hidden bg-white shadow-lg">
-            <Image source={{ uri: "https://api.dicebear.com/8.x/notionists/png?seed=Milo&backgroundColor=fca5a5" }} className="w-full h-full" />
+            <Image source={{ uri: userData?.avatar || avataresDisponiveis[0] }} className="w-full h-full" />
           </View>
           <View className="absolute bottom-0 right-0 w-8 h-8 bg-yellow-400 rounded-full border-2 border-white items-center justify-center">
             <Star size={14} color="white" fill="white" />
@@ -214,6 +245,27 @@ export default function PerfilScreen() {
             <X size={20} color="#374151" />
           </TouchableOpacity>
         </View>
+
+        {/* CARROSSEL DE AVATARES */}
+          <View className="mb-4">
+            <Text className="text-xs font-bold text-gray-500 mb-2 uppercase">Escolha seu Avatar</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row overflow-visible">
+              {avataresDisponiveis.map((avatarUrl, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => setFormAvatar(avatarUrl)}
+                  className={`mr-3 rounded-full border-4 ${
+                    formAvatar === avatarUrl ? 'border-red-800' : 'border-transparent'
+                  }`}
+                >
+                  <Image 
+                    source={{ uri: avatarUrl }} 
+                    style={{ width: 60, height: 60, borderRadius: 30 }} 
+                  />
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
 
         <View className="space-y-4 mb-8">
           <View>

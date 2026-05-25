@@ -67,7 +67,7 @@ export default function HomeScreen() {
         <View className="flex-row items-center justify-between">
           <View className="flex-row items-center gap-3">
             <View className="w-14 h-14 rounded-full overflow-hidden border-2 border-red-800 p-0.5">
-              <Image source={{ uri: "https://api.dicebear.com/8.x/notionists/png?seed=Milo&backgroundColor=fca5a5" }} className="w-full h-full rounded-full" />
+              <Image source={{ uri: userData?.avatar || 'https://api.dicebear.com/8.x/notionists/png?seed=Milo&backgroundColor=fca5a5' }} className="w-full h-full rounded-full" />
             </View>
             <View>
               <Text className="font-bold text-lg text-gray-800 capitalize">{userName}</Text>

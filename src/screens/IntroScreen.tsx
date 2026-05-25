@@ -26,6 +26,13 @@ export default function IntroScreen() {
             As interfaces deste projeto foram desenvolvidas pelos discentes da disciplina HCI – Interação Humano-Computador, orientada pelo docente Fábio Caparica, do curso de Design UFPE – CAA | 2025.2
           </Text>
         </View>
+
+        <View className="pt-4 border-t border-gray-100 space-y-4">
+          <Text className="text-gray-400 text-[11px] leading-relaxed text-center">
+            Bem vindos à versão beta 2.2.0 do AnatoApp! Atualmente temos as abas de Home, Jornada e Perfil completamente funcionais. Em breve novas telas serão devidamente implementadas.
+          </Text>
+        </View>
+
       </ScrollView>
 
       <View className="w-full mb-8">
