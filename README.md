@@ -2,6 +2,18 @@
 
 O **AnatoApp** é uma plataforma interativa de aprendizado de anatomia humana, desenvolvida como projeto prático para a disciplina de **Interação Humano-Computador (HCI)** no Centro de Informática da UFPE. O foco do projeto é a gamificação do ensino de sistemas anatômicos para estudantes da área da saúde.
 
+## ❗ Status do Projeto & Novidades
+
+### ✨ O que há de novo (v2.0.0)
+- **Gamificação:** Sistema de combo de acertos (streak) com bônus de XP acumulado por partida.
+- **Customização:** Carrossel de seleção de avatares com salvamento em tempo real.
+- **Microlearning:** Quizzes limitados a blocos fixos de 10 questões para evitar fadiga.
+
+### 🚧 Em desenvolvimento / Próximos Passos
+- [ ] Implementação de efeitos sonoros para sequências de acertos.
+- [ ] Criação de telas de *loading* com efeito esqueleto (*skeleton screens*).
+- [ ] Sistema de conquistas persistentes vinculadas ao perfil.
+
 ---
 
 ## 🛠️ Tecnologias Utilizadas
