@@ -1,5 +1,6 @@
 import { Tabs } from 'expo-router';
 import { Book, Home, MessageSquare, Settings, User } from 'lucide-react-native';
+import { Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { THEME } from '../../src/constants';
 
@@ -12,15 +13,22 @@ export default function TabsLayout() {
         tabBarActiveTintColor: THEME.primary,
         tabBarInactiveTintColor: '#9ca3af',
         tabBarStyle: {
+          backgroundColor: '#ffffff',
           borderTopWidth: 1,
           borderTopColor: '#f3f4f6',
-          // Se o celular tem a barra (insets.bottom > 0), soma o tamanho dela + 10px. Se não, usa 20px padrão.
-          paddingBottom: insets.bottom ? insets.bottom + 10 : 20, 
           
-          // Aumenta a altura total do menu para compensar o empurrão para cima
-          height: insets.bottom ? 60 + insets.bottom : 70,
-          paddingTop: 8,
-          backgroundColor: '#ffffff'
+          // O Android fica com 70px fixos. O iOS soma os 65px + o tamanho do "risquinho" inferior.
+          height: Platform.OS === 'android' ? 70 : 65 + insets.bottom,
+          
+          // No Android, um respiro fixo de 10px. No iOS, respeita a área segura.
+          paddingBottom: Platform.OS === 'android' ? 10 : insets.bottom,
+          
+          // Dá um pequeno respiro no topo para os ícones não colarem na linha
+          paddingTop: 10,
+        },
+        // Adicione esta propriedade para empurrar o texto um pouquinho para cima no Android
+        tabBarLabelStyle: {
+          paddingBottom: Platform.OS === 'android' ? 5 : 0,
         },
       }}
     >
