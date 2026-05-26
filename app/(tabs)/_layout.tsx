@@ -1,13 +1,48 @@
 import { Tabs } from 'expo-router';
 import { Book, Home, MessageSquare, Settings, User } from 'lucide-react-native';
-import { Platform } from 'react-native';
+import { Platform, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { THEME } from '../../src/constants';
 
 export default function TabsLayout() {
   const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions(); // Pega a largura da tela
+  // 1. Mapeamento exato de onde o usuário está
   const isWeb = Platform.OS === 'web';
-  const isAndroid = Platform.OS === 'android';
+  const isDesktopWeb = isWeb && width > 768; // Telas grandes (PC)
+  const isMobileWeb = isWeb && width <= 768; // Telas pequenas (Celulares no navegador)
+  const isAndroidNative = Platform.OS === 'android';
+  const isIOSNative = Platform.OS === 'ios';
+
+  // 2. Valores base (padrão)
+  let tabHeight = 65;
+  let tabPadBottom = 10;
+  let tabPadTop = 10;
+  let labelPadBottom = 5;
+
+  // 3. Regras específicas para cada um dos 5 cenários
+  if (isDesktopWeb) {
+    // Web no PC: Comportamento normal, tela limpa.
+    tabHeight = 65;
+    tabPadBottom = 10;
+    labelPadBottom = 5;
+  } else if (isMobileWeb) {
+    // Web no Android e Web no iPhone: Precisam da almofada gigante para o navegador!
+    tabHeight = 95;
+    tabPadBottom = 30;
+    labelPadBottom = 5;
+  } else if (isAndroidNative) {
+    // Android Expo Go (App Nativo): Foge um pouco da barra física, sem exageros.
+    tabHeight = 90;
+    tabPadBottom = 10;
+    labelPadBottom = 5;
+  } else if (isIOSNative) {
+    // iPhone Expo Go (App Nativo): Usa o "insets" matemático da Apple para fugir da linha inferior.
+    tabHeight = 65 + insets.bottom;
+    tabPadBottom = insets.bottom;
+    labelPadBottom = 0;
+  }
+
   return (
     <Tabs
       screenOptions={{
@@ -18,17 +53,15 @@ export default function TabsLayout() {
           backgroundColor: '#ffffff',
           borderTopWidth: 1,
           borderTopColor: '#f3f4f6',
-          
-          // 1. A ALTURA CRESCE NA WEB
-          height: isWeb ? 80 : (isAndroid ? 100 : 65 + insets.bottom),
-          
-          // 2. O FUNDO BRANCO ESTICA PARA BAIXO NA WEB (Esta é a almofada dos botões)
-          paddingBottom: isWeb ? 25 : (isAndroid ? 50 : insets.bottom),
-          
-          paddingTop: 5,
+          // Aplicamos as variáveis calculadas acima
+          height: tabHeight,
+          paddingBottom: tabPadBottom,
+          paddingTop: tabPadTop,
         },
         tabBarLabelStyle: {
-          paddingBottom: isAndroid ? 5 : 0,
+          paddingBottom: labelPadBottom,
+          fontSize: 11,
+          fontWeight: '600',
         },
       }}
     >
