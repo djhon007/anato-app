@@ -27,9 +27,10 @@ export default function TabsLayout() {
     tabPadBottom = 10;
     labelPadBottom = 5;
   } else if (isMobileWeb) {
-    // Web no Android e Web no iPhone: Precisam da almofada gigante para o navegador!
-    tabHeight = 95;
-    tabPadBottom = 30;
+    // A sua teoria estava certa! O navegador já empurra a tela para cima.
+    // Damos apenas 10px de respiro para o texto não colar no chão da tela.
+    tabHeight = 70; 
+    tabPadBottom = 10; 
     labelPadBottom = 5;
   } else if (isAndroidNative) {
     // Android Expo Go (App Nativo): Foge um pouco da barra física, sem exageros.
