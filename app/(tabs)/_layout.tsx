@@ -20,12 +20,12 @@ export default function TabsLayout() {
           borderTopColor: '#f3f4f6',
           
           // 1. A ALTURA CRESCE NA WEB
-          height: isWeb ? 90 : (isAndroid ? 100 : 65 + insets.bottom),
+          height: isWeb ? 80 : (isAndroid ? 100 : 65 + insets.bottom),
           
           // 2. O FUNDO BRANCO ESTICA PARA BAIXO NA WEB (Esta é a almofada dos botões)
           paddingBottom: isWeb ? 25 : (isAndroid ? 50 : insets.bottom),
           
-          paddingTop: 10,
+          paddingTop: 5,
         },
         tabBarLabelStyle: {
           paddingBottom: isAndroid ? 5 : 0,
